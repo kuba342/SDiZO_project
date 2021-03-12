@@ -8,6 +8,7 @@ class App
 {
 //private:
     /* data */
+    int optionNumber;
     std::string GREETINGS_MESSAGE;
     std::string chooseOption;
     std::string option_1;
@@ -18,6 +19,7 @@ public:
     ~App();
     //Deklaracje metod:
     void showMessage();
+    void mainLoop();
 };
 
 App::~App()
