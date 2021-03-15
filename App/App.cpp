@@ -14,26 +14,23 @@ int main(void){
 }
 
 
-
-
-
+/*KONSTRUKTOR*/
 App::App(/* args */)
 {
     GREETINGS_MESSAGE = "Program na zaliczenie projektu do kursu:\nStruktury danych i zlozonosc obliczeniowa\nJakub Derda 252819\n\n";
-    chooseOption = "Wybierz opcje:\n";
-    option_1 = "1.Opcja nr 1\n";
-    option_2 = "2.Opcja nr 2\n";
-    option_3 = "3.Zakoncz program\n";
+    options = "Wybierz opcje:\n1.Opcja nr 1\n";
+}
+
+/*DESTRUKTOR*/
+App::~App()
+{
 }
 
 //Implementacja metod:
 void App::showMessage(){
     //Wiadomość powitalna:
-    cout << GREETINGS_MESSAGE;
-    //Wybierz opcję:
-    cout << chooseOption;
-    //Opcje po kolei:
-    cout << option_1 + option_2 + option_3;
+    cout << GREETINGS_MESSAGE
+         << options;
 }
 
 void App::mainLoop(){
