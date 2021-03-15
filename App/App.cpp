@@ -7,11 +7,15 @@
 
 using namespace std;
 
-int main(){
+int main(void){
     App app = App();
     app.mainLoop();
     return 0;
 }
+
+
+
+
 
 App::App(/* args */)
 {
