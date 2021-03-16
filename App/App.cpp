@@ -3,8 +3,6 @@
 #include <iostream>
 #include "App.h"
 
-
-
 using namespace std;
 
 int main(void){
@@ -18,12 +16,13 @@ int main(void){
 App::App(/* args */)
 {
     GREETINGS_MESSAGE = "Program na zaliczenie projektu do kursu:\nStruktury danych i zlozonosc obliczeniowa\nJakub Derda 252819\n\n";
-    options = "Wybierz opcje:\n1.Opcja nr 1\n";
+    options = "Wybierz opcje:\n1.Operacje na tablicy dynamicznej\n";
 }
 
 /*DESTRUKTOR*/
 App::~App()
 {
+    cout << "Program zakonczyl swoje dzialanie\nPozdrawiam!";
 }
 
 //Implementacja metod:
@@ -44,7 +43,7 @@ void App::mainLoop(){
 
         switch(this->optionNumber){
             case 1:
-                cout << "Wykonuje opcje nr 1\n";
+                
                 break;
             case 2:
                 cout << "Wykonuje opcje nr 2\n";
@@ -59,4 +58,10 @@ void App::mainLoop(){
         }
         system("cls");
     }
+}
+
+
+void App::arrayOperations(){
+    system("cls");
+    
 }

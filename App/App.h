@@ -1,12 +1,10 @@
-#include <iostream>
-#include <stdio.h>
 #include <string>
 
 //using namespace std;
 
 class App
 {
-//private:
+private:
     /* data */
     int optionNumber;
     std::string GREETINGS_MESSAGE;
@@ -17,4 +15,5 @@ public:
     //Deklaracje metod:
     void showMessage();
     void mainLoop();
+    void arrayOperations();
 };
