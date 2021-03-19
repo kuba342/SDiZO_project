@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 
@@ -25,5 +26,5 @@ public:
     void removeAtTheEnd();
     void addOnPosition(int number, int numberOfPosition);
     void removeOnPosition(int number, int numberOfPosition);
-
+    void enterNumbers();
 };

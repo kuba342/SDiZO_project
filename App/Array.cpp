@@ -104,10 +104,24 @@ void Array::addOnPosition(int number, int numberOfPosition){
     }
 }
 
-
 void Array::removeOnPosition(int number, int numberOfPosition){
     
 }
+
+
+void Array::enterNumbers(){
+    int index = this->size;
+    int bufor;
+    for(int i=0; i<index; i++){
+        std::cout << "Tab[" << i << "] = ";
+        std::cin >> bufor;
+        if(bufor - int(bufor) == 0){
+            this->table[i] = bufor;
+        }
+        std::cout << "\n";
+    }
+}
+
 
 std::string Array::toString(){
     std::string bufor;
