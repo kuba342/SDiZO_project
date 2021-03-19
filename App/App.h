@@ -1,15 +1,16 @@
 #pragma once
+
 #include <string>
-#include "Array.h"
+#include "ArrayLib/Array.h"
 
 class App
 {
 private:
     /* data */
-    int optionNumber;
+    char optionChar;
     std::string GREETINGS_MESSAGE;
     std::string OPTIONS;
-    Array array;
+    Array *array;
 public:
     App();
     ~App();
@@ -17,4 +18,6 @@ public:
     void showMessage();
     void mainLoop();
     void arrayOperations();
+    void loopWithTxt();
+    void loopWithoutTxt();
 };

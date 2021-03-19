@@ -1,22 +1,57 @@
-#include <iostream>
-#include "Array.h"
-#include <string>
+#pragma once
 
+#include <iostream>
+
+class Array
+{
+private:
+    /* data */
+    int* table;
+    int size;
+public:
 /*KONSTRUKTORY*/
-Array::Array(){
+Array(){
     this->size = 0;
     this->table = nullptr;
 }
-
-Array::Array(int Size){
+Array(int Size){
     this->size = Size;
     this->table = new int[Size];
 }
 
 /*DESTRUKTOR*/
-Array::~Array()
+~Array()
 {
     delete [] table;
+}
+    //Settery ii gettery
+    int getSize();
+    int* getTable();
+    //Operacje na elementach tablicy
+    void swap(int beginning, int end);
+    void addAtTheBeginning(int number);
+    void addAtTheEnd(int number);
+    void removeAtTheBeginning();
+    void removeAtTheEnd();
+    void addOnPosition(int number, int numberOfPosition);
+    void removeOnPosition(int number, int numberOfPosition);
+    void enterNumbers();
+    void showArray();
+};
+
+
+
+void Array::enterNumbers(){
+    int index = this->size;
+    int bufor;
+    for(int i=0; i<index; i++){
+        std::cout << "Tab[" << i << "] = ";
+        std::cin >> bufor;
+        if(bufor - int(bufor) == 0){
+            this->table[i] = bufor;
+        }
+        std::cout << "\n";
+    }
 }
 
 
@@ -108,33 +143,13 @@ void Array::removeOnPosition(int number, int numberOfPosition){
     
 }
 
-
-void Array::enterNumbers(){
-    int index = this->size;
-    int bufor;
-    for(int i=0; i<index; i++){
-        std::cout << "Tab[" << i << "] = ";
-        std::cin >> bufor;
-        if(bufor - int(bufor) == 0){
-            this->table[i] = bufor;
-        }
-        std::cout << "\n";
-    }
-}
-
-
-std::string Array::toString(){
-    std::string bufor;
-    bufor = "Zawartosc tablicy: [";
+void Array::showArray(){
+    printf("Zawartosc tablicy: [");
     for(int i=0; i<this->size; i++){
-        bufor += " ";
-        bufor += this->table[i];
-        bufor += " ";
+        printf(" %d ", this->table[i]);
     }
-    bufor+= "]\n";
-    return bufor;
+    printf("]\n");
 }
-
 
 /*SETTERY I GETTERY*/
 int Array::getSize(){
