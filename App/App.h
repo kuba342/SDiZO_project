@@ -2,6 +2,7 @@
 
 #include <string>
 #include "ArrayLib/Array.h"
+#include "ArrayLib/ArrayOperations.h"
 
 class App
 {
@@ -11,6 +12,7 @@ private:
     std::string GREETINGS_MESSAGE;
     std::string OPTIONS;
     Array *array;
+    ArrayOperations *arrayOp;
 public:
     App();
     ~App();

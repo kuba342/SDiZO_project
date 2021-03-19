@@ -37,6 +37,7 @@ Array(int Size){
     void removeOnPosition(int number, int numberOfPosition);
     void enterNumbers();
     void showArray();
+    void setElement(int index, int element);
 };
 
 
@@ -158,4 +159,8 @@ int Array::getSize(){
 
 int* Array::getTable(){
     return this->table;
+}
+
+void Array::setElement(int index, int element){
+    this->table[index] = element;
 }

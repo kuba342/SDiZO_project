@@ -79,9 +79,9 @@ void App::loopWithoutTxt(){
         switch(this->optionChar){
             case '1':
                 system("cls");
-                std::cout << "Wykonuje opcje nr 1\n";
-                sleep(2);
-                //arrayOperations();
+                /*std::cout << "Wykonuje opcje nr 1\n";
+                sleep(2);*/
+                arrayOperations();
                 break;
             case '2':
                 system("cls");
@@ -103,7 +103,8 @@ void App::loopWithoutTxt(){
 }
 
 void App::arrayOperations(){
-    
+    this->arrayOp = new ArrayOperations();
+    this->arrayOp->mainLoop();
     //new ArrayOperations();
     /*system("cls");
     int elements;
