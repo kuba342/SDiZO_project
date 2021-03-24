@@ -3,6 +3,9 @@
 #include <string>
 #include "ArrayLib/Array.h"
 #include "ArrayLib/ArrayOperations.h"
+#include "LinkedListLib/LinkedListOperations.h"
+#include "BinaryHeapLib/BinaryHeapOperations.h"
+#include "BRTree/BRTreeOperations.h"
 
 class App
 {
@@ -11,8 +14,10 @@ private:
     char optionChar;
     std::string GREETINGS_MESSAGE;
     std::string OPTIONS;
-    Array *array;
     ArrayOperations *arrayOp;
+    LinkedListOperations *listOp;
+    BinaryHeapOperations *heapOp;
+    BRTreeOperations *treeOp;
 public:
     App();
     ~App();
@@ -20,6 +25,7 @@ public:
     void showMessage();
     void mainLoop();
     void arrayOperations();
-    void loopWithTxt();
-    void loopWithoutTxt();
+    void listOperations();
+    void heapOperations();
+    void treeOperations();
 };

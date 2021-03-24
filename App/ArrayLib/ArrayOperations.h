@@ -36,6 +36,7 @@ void ArrayOperations::mainLoop(){
                   << "1. Stworz nowa tablice\n"
                   << "2. Wypelnij tablice recznie\n"
                   << "3. Wyswietl tablice\n"
+                  << "4. Usun tablice\n"
                   << "X lub x. Zakoncz operacje na tablicy\n\n"
                   << "Wpisz numer lub znak operacji: ";
         std::cin >> number;
