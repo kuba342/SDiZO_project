@@ -9,21 +9,9 @@ private:
     int* table;
     int size;
 public:
-/*KONSTRUKTORY*/
-Array(){
-    this->size = 0;
-    this->table = nullptr;
-}
-Array(int Size){
-    this->size = Size;
-    this->table = new int[Size];
-}
-
-/*DESTRUKTOR*/
-~Array()
-{
-    delete [] table;
-}
+    Array();
+    Array(int Size);
+    ~Array();
     //Settery ii gettery
     int getSize();
     int* getTable();
@@ -41,20 +29,21 @@ Array(int Size){
 };
 
 
-
-void Array::enterNumbers(){
-    int index = this->size;
-    int bufor;
-    for(int i=0; i<index; i++){
-        std::cout << "Tab[" << i << "] = ";
-        std::cin >> bufor;
-        if(bufor - int(bufor) == 0){
-            this->table[i] = bufor;
-        }
-        std::cout << "\n";
-    }
+/*KONSTRUKTORY*/
+Array::Array(){
+    this->size = 0;
+    this->table = nullptr;
+}
+Array::Array(int Size){
+    this->size = Size;
+    this->table = new int[Size];
 }
 
+/*DESTRUKTOR*/
+Array::~Array()
+{
+    delete [] table;
+}
 
 
 /*METODY POMOCNICZE*/
@@ -78,7 +67,7 @@ void Array::addAtTheBeginning(int number){
     Tab = new int[size];
     Tab[0] = number;
     for(int i=1; i<size; i++){
-        Tab[i] = this->table[i];
+        Tab[i] = this->table[i-1];
     }
     delete [] table;
     this->table = Tab;
