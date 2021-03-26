@@ -91,7 +91,7 @@ void App::arrayOperations(){
 }
 
 void App::listOperations(){
-    this->listOp = new LinkedListOperations();
+    this->listOp = new BiListOperations();
     std::cout << "TU BEDA OPERACJE";
     sleep(2);
 }

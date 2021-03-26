@@ -16,6 +16,7 @@ public:
     //Settery ii gettery
     int getSize();
     int* getTable();
+    void setElement(int index, int element);
     //Operacje na elementach tablicy
     void swap(int beginning, int end);
     void addAtTheBeginning(int number);
@@ -24,9 +25,7 @@ public:
     void removeAtTheEnd();
     void addOnPosition(int number, int numberOfPosition);
     void removeOnPosition(int numberOfPosition);
-    void enterNumbers();
     void showArray();
-    void setElement(int index, int element);
 };
 
 

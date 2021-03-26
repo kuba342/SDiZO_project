@@ -3,7 +3,7 @@
 #include <string>
 #include "ArrayLib/Array.h"
 #include "ArrayLib/ArrayOperations.h"
-#include "LinkedListLib/LinkedListOperations.h"
+#include "BidirectionalListLib/BiListOperations.h"
 #include "BinaryHeapLib/BinaryHeapOperations.h"
 #include "BRTree/BRTreeOperations.h"
 
@@ -15,7 +15,7 @@ private:
     std::string GREETINGS_MESSAGE;
     std::string OPTIONS;
     ArrayOperations *arrayOp;
-    LinkedListOperations *listOp;
+    BiListOperations *listOp;
     BinaryHeapOperations *heapOp;
     BRTreeOperations *treeOp;
 public:
