@@ -9,6 +9,7 @@ private:
     int* table;
     int size;
 public:
+    bool fullTable;
     Array();
     Array(int Size);
     ~Array();
@@ -22,7 +23,7 @@ public:
     void removeAtTheBeginning();
     void removeAtTheEnd();
     void addOnPosition(int number, int numberOfPosition);
-    void removeOnPosition(int number, int numberOfPosition);
+    void removeOnPosition(int numberOfPosition);
     void enterNumbers();
     void showArray();
     void setElement(int index, int element);
@@ -112,25 +113,35 @@ void Array::addOnPosition(int number, int numberOfPosition){
     this->size++;
     int* Tab;
     Tab = new int[size];
-    for(int i=0; i<numberOfPosition; i++){
-        Tab[i] = this->table[i];
-    }
-    Tab[numberOfPosition] = number;
-    if(numberOfPosition < this->size-1){
-        for(int i=numberOfPosition+1; i<size; i++){
-            Tab[i] = table[i-1];
+    for(int i=0; i<this->size; i++){
+        if(i<numberOfPosition){
+            Tab[i] = this->table[i];
         }
-        delete [] table;
-        this->table = Tab;
-    } 
-    else{
-        delete [] table;
-        this->table = Tab;
+        else if(i==numberOfPosition){
+            Tab[i] = number;
+        }
+        else{
+            Tab[i] = this->table[i-1];
+        }
     }
+    delete [] table;
+    this->table = Tab;
 }
 
-void Array::removeOnPosition(int number, int numberOfPosition){
-    
+void Array::removeOnPosition(int numberOfPosition){
+    this->size--;
+    int* Tab;
+    Tab = new int[size];
+    for(int i=0; i<this->size; i++){
+        if(i >= numberOfPosition){
+            Tab[i] = this->table[i+1];
+        }
+        else{
+            Tab[i] = this->table[i];
+        }
+    }
+    delete [] table;
+    this->table = Tab;
 }
 
 void Array::showArray(){
