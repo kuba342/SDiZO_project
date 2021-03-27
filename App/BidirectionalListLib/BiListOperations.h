@@ -28,8 +28,6 @@ public:
     void removeAtTheEnd();
     //6
     void removeOnPosition();
-    //F lub f
-    void enterNumbers();
     //S lub s
     void showList();
     //D lub d
@@ -59,7 +57,6 @@ void BiListOperations::mainLoop(){
                   << "4. Usun liczbe z poczatku listy\n"
                   << "5. Usun liczbe z konca listy\n"
                   << "6. Usun liczbe z dowolnego miejsca listy\n"
-                  << "F lub f. Wypelnij liste recznie\n"
                   << "S lub s. Wyswietl liste\n"
                   << "D lub d. Usun liste\n"
                   << "X lub x. Zakoncz operacje na liscie\n\n"
@@ -97,14 +94,6 @@ void BiListOperations::mainLoop(){
             
             case '6':
                 removeOnPosition();
-                break;
-
-
-            case 'F':
-                enterNumbers();
-                break;
-            case 'f':
-                enterNumbers();
                 break;
             
             case 'S':
@@ -244,23 +233,102 @@ void BiListOperations::addAtTheEnd(){
 }
 
 void BiListOperations::addOnPosition(){
-
+    system("cls");
+    if(this->list != nullptr){
+        std::string bufor;
+        std::cout << "Jako ktory element umiescic liczbe?\n"
+                  << "(dziala jak indeksy w tablicy)\n"
+                  << "Wpisz numer: ";
+        std::cin >> bufor;
+        fflush(stdin);
+        if(this->lib->isNum(bufor) && (std::stoi(bufor) < this->list->getCount())){
+            int index = std::stoi(bufor);
+            std::cout << "\nJaka wartosc?\nWpisz: ";
+            std::cin >> bufor;
+            fflush(stdin);
+            if(this->lib->isNum(bufor)){
+                int number = std::stoi(bufor);
+                this->list->addOnPosition(this->list->getElement(index), number);
+                system("cls");
+                std::cout << "Dodano nowy element do listy!";
+                sleep(2);
+            }
+            else{
+                system("cls");
+                std::cout << "Wprowadzone znaki nie sa liczba!";
+                sleep(2);
+                system("cls");
+            }
+        }
+        else{
+            system("cls");
+            std::cout << "Wprowadzone znaki nie sa liczba lub zly numer kolejnosci!";
+            sleep(3);
+            system("cls");
+        }
+    }
+    else{
+        std::cout << "Musisz najpierw stworzyc liste!";
+        sleep(2);
+    }
+    system("cls");
 }
 
 void BiListOperations::removeAtTheBeginning(){
-
+    system("cls");
+    if(this->list != nullptr && this->list->getCount() > 0){
+        this->list->removeAtTheBeginning();
+        std::cout << "Usunieto pierwszy element!";
+        sleep(2);
+    }
+    else{
+        std::cout << "Nie stworzono listy lub nie ma w niej danych!";
+        sleep(2);
+    }
+    system("cls");
 }
 
 void BiListOperations::removeAtTheEnd(){
-
+    system("cls");
+    if(this->list != nullptr && this->list->getCount() > 0){
+        this->list->removeAtTheEnd();
+        std::cout << "Usunieto ostatni element!";
+        sleep(2);
+    }
+    else{
+        std::cout << "Nie stworzono listy lub nie ma w niej danych!";
+        sleep(2);
+    }
+    system("cls");
 }
  
 void BiListOperations::removeOnPosition(){
-
-}
-
-void BiListOperations::enterNumbers(){
-
+    system("cls");
+    if(this->list != nullptr){
+        std::string bufor;
+        std::cout << "Ktory w kolejnosci element (liczac od zera) usunac?\nWpisz: ";
+        std::cin >> bufor;
+        fflush(stdin);
+        if(this->lib->isNum(bufor) && (std::stoi(bufor) < this->list->getCount())){
+            int index = std::stoi(bufor);
+            this->list->removeOnPosition(this->list->getElement(index));
+            system("cls");
+            std::cout << "Usunieto wskazany element!";
+            sleep(2);
+            system("cls");
+        }
+        else{
+            system("cls");
+            std::cout << "Wprowadzone znaki nie sa liczba lub zly numer w kolejnosci!";
+            sleep(3);
+            system("cls");
+        }
+    }
+    else{
+        std::cout << "Musisz najpierw stworzyc liste!";
+        sleep(2);
+    }
+    system("cls");
 }
 
 void BiListOperations::showList(){
@@ -281,5 +349,47 @@ void BiListOperations::showList(){
 }
 
 void BiListOperations::removeList(){
+    system("cls");
+    if(this->list != nullptr){
+        char decision;
+        std::cout << "Czy chcesz usunac istniejaca liste?\nWpisz T/N: ";
+        std::cin >> decision;
+        fflush(stdin);
 
+        switch(decision){
+            case 'T':
+                system("cls");
+                delete this->list;
+                this->list = nullptr;
+                std::cout << "Lista usunieta!";
+                sleep(2);
+                break;
+            case 't':
+                system("cls");
+                delete this->list;
+                this->list = nullptr;
+                std::cout << "Lista usunieta!";
+                sleep(2);
+                break;
+                
+            case 'N':
+                return;
+                break;
+            case 'n':
+                return;
+                break;
+                
+            default:
+                system("cls");
+                std::cout << "Wprowadzono niepoprawny znak!\nAnulowano usuwanie!";
+                sleep(3);
+                return;
+                break;
+        }
+    }
+    else{
+        std::cout << "Nie stworzono listy - operacja anulowana!";
+        sleep(2);
+    }
+    system("cls");
 }
