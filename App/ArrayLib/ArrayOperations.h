@@ -49,6 +49,8 @@ ArrayOperations::ArrayOperations()
 //DESTRUKTOR
 ArrayOperations::~ArrayOperations()
 {
+    delete this->array;
+    delete this->lib;
 }
 
 /*********************RESZTA METOD POMOCNICZYCH****************************************/
@@ -60,7 +62,7 @@ void ArrayOperations::mainLoop(){
                   << "N lub n. Stworz nowa tablice\n"
                   << "1. Dodaj liczbe na poczatku tablicy\n"
                   << "2. Dodaj liczbe na koncu tablicy\n"
-                  << "3. Dodaj liczbe w dowolnym miejscu\n"
+                  << "3. Dodaj liczbe w dowolnym miejscu tablicy\n"
                   << "4. Usun liczbe z poczatku tablicy\n"
                   << "5. Usun liczbe z konca tablicy\n"
                   << "6. Usun liczbe z dowolnego miejsca tablicy\n"

@@ -48,6 +48,9 @@ BiList::BiList()
 //DESTRUKTOR
 BiList::~BiList()
 {
+    while(this->count){
+        this->removeAtTheEnd();
+    }
 }
 
 
