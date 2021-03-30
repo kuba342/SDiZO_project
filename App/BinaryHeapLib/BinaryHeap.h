@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <math.h>
 
 class BinaryHeap
@@ -13,12 +14,15 @@ private:
 
 public:
     BinaryHeap();
+    BinaryHeap(int size);
     ~BinaryHeap();
     //Operacje na tablicy
     void swap(int index1, int index2);
     //Operacje na kopcu
     void heapify(int index);
     void buildHeap();
+    void heapPush(int number);
+    void heapPop();
 
     //relacja rodzic - syn
     int parent(int i);
@@ -36,6 +40,8 @@ public:
     void setElement(int index, int element);
     void setHeapSize(int size);
 
+    //wyświetlenie tablicy
+    void showArray();
     //wyświetlenie kopca
     void showBinaryHeap();
 };
@@ -44,6 +50,14 @@ BinaryHeap::BinaryHeap(){
     this->array = nullptr;
     this->size = 0;
     this->isBinaryHeap = false;
+    this->heapSize = 0;
+}
+
+BinaryHeap::BinaryHeap(int size){
+    this->array = new int[size];
+    this->size = size;
+    this->isBinaryHeap = false;
+    this->heapSize = 0;
 }
 
 BinaryHeap::~BinaryHeap(){
@@ -70,14 +84,14 @@ void BinaryHeap::heapify(int index){
     left = this->leftSon(index);
     right = this->rightSon(index);
 
-    if(left <= this->getHeapSize() && this->getElement(left) > this->getElement(index)){
+    if(left <= this->getHeapSize() && (this->getElement(left) > this->getElement(index))){
         largest = left;
     }
     else{
         largest = index;
     }
 
-    if(right <= this->getHeapSize() && this->getElement(right) > this->getElement(largest)){
+    if(right <= this->getHeapSize() && (this->getElement(right) > this->getElement(largest))){
         largest = right;
     }
 
@@ -95,8 +109,71 @@ void BinaryHeap::buildHeap(){
     for(int i; i>=0; i--){
         this->heapify(i);
     }
+    this->isBinaryHeap = true;
 }
 
+//Dla tych metod należy sprawdzić czy wywołano wcześniej metodę buildHeap() 
+//w operacjach
+void BinaryHeap::heapPush(int number){
+    int i, j;
+
+    i = this->getHeapSize();
+    this->heapSize++;
+    //Przepisanie do nowej lokalizacji
+    int* Tab;
+    Tab = new int[this->getHeapSize()];
+    for(int i=0; i<this->getHeapSize();i++){
+        Tab[i] = this->array[i];
+    }
+    delete [] array;
+    this->array = Tab;
+    this->size++;
+    //Dalsza część procedury
+    j = this->parent(i);
+
+    while(i>0 && (this->array[i] < number)){
+        this->setElement(i, this->getElement(j));
+        i = j;
+        j = this->parent(i);
+    }
+    this->setElement(i,number);
+}
+
+void BinaryHeap::heapPop(){
+    if(this->getHeapSize()>0){
+        int i, j, v;
+        this->heapSize--;
+        //Ostatni element kopca
+        v = this->getElement(this->heapSize);
+        //Początek od korzenia
+        i = 0;
+        j = 1; //  <- lewy syn
+
+        while(j<this->getHeapSize()){
+            if(j+1<this->getHeapSize() && this->getElement(j+1) > this->getElement(j)){
+                j++;
+            }
+            if(v >= this->getElement(j)){
+                break;
+            }
+
+            this->setElement(i, this->getElement(j));
+            i = j;
+            j = this->rightSon(j);
+        }
+        this->setElement(i,v);
+        //Przepisanie do nowej lokalizacji
+        int* Tab;
+        Tab = new int[this->getHeapSize()];
+        for(int i=0; i<this->getHeapSize(); i++){
+            Tab[i] = this->getElement(i);
+        }
+        delete [] array;
+        this->array = Tab;
+        this->size--;
+    }
+    else return;
+}
 
 /**************METODY OBLICZAJĄCE INDEKSY******/
 int BinaryHeap::parent(int i){
@@ -111,12 +188,21 @@ int BinaryHeap::rightSon(int i){
     return (2*i)+1;
 }
 
-/**************WYŚWIETL KOPIEC******************/
+/**************WYŚWIETL KOPIEC/TABLICE******************/
 void BinaryHeap::showBinaryHeap(){
-    double level;
-    level = log2(this->getHeapSize());
-    
+    std::cout << "Zawartosc kopca: [";
+    for(int i=0; i<this->heapSize; i++){
+        std::cout << " " << this->array[i] << " ";
+    }
+    std::cout << "]";
+}
 
+void BinaryHeap::showArray(){
+    std::cout << "Zawartosc tablicy z kopcem: [";
+    for(int i=0; i<this->size; i++){
+        std::cout << " " << this->array[i] << " ";
+    }
+    std::cout << "]";
 }
 
 /**************SETTERY I GETTERY*****************/

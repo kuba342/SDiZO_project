@@ -3,14 +3,13 @@
 #include <unistd.h>
 #include <string>
 #include "Array.h"
-#include "Additional.h"
 
 class ArrayOperations
 {
 private:
     /* data */
-    Array *array;
-    Additional *lib;
+    Array* array;
+    Additional* lib;
 public:
     ArrayOperations();
     ~ArrayOperations();
