@@ -4,12 +4,13 @@
 #include <unistd.h>
 #include <string>
 #include "BiList.h"
+#include "Additional2.h"
 
 class BiListOperations
 {
 private:
     BiList* list;
-    Additional* lib;
+    Additional2* lib;
 public:
     BiListOperations();
     ~BiListOperations();
@@ -37,6 +38,7 @@ public:
 //KONSTRUKTOR
 BiListOperations::BiListOperations(){
     this->list = nullptr;
+    this->lib = new Additional2();
 }
 
 //DESTRUKTOR

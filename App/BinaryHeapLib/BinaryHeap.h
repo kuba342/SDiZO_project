@@ -7,9 +7,6 @@ class BinaryHeap
 {
 private:
     int* array;
-    int size;
-
-    bool isBinaryHeap;
     int heapSize;
 
 public:
@@ -30,7 +27,6 @@ public:
     int rightSon(int i);
     //Gettery i settery
     bool getIsBinaryHeap();
-    int getSize(); 
     int getElement(int index);
     int getParent(int index);
     int getLeftSon(int index);
@@ -40,23 +36,17 @@ public:
     void setElement(int index, int element);
     void setHeapSize(int size);
 
-    //wyświetlenie tablicy
-    void showArray();
     //wyświetlenie kopca
     void showBinaryHeap();
 };
 
 BinaryHeap::BinaryHeap(){
-    this->array = nullptr;
-    this->size = 0;
-    this->isBinaryHeap = false;
     this->heapSize = 0;
+    this->array = new int[this->getHeapSize()];
 }
 
 BinaryHeap::BinaryHeap(int size){
     this->array = new int[size];
-    this->size = size;
-    this->isBinaryHeap = false;
     this->heapSize = 0;
 }
 
@@ -67,7 +57,7 @@ BinaryHeap::~BinaryHeap(){
 /**************RESZTA METOD*********************/
 void BinaryHeap::swap(int index1, int index2){
     int bufor;
-    if(index1 > this->getSize() || index2 > this->getSize()){
+    if(index1 > this->getHeapSize() || index2 > this->getHeapSize()){
         return;
     }
     else{
@@ -102,19 +92,48 @@ void BinaryHeap::heapify(int index){
 }
 
 void BinaryHeap::buildHeap(){
-    this->setHeapSize(this->getSize());
-    
-    int i = floor(this->getSize()/2);
+    int i = floor(this->getHeapSize()/2);
 
     for(int i; i>=0; i--){
         this->heapify(i);
     }
-    this->isBinaryHeap = true;
 }
 
 //Dla tych metod należy sprawdzić czy wywołano wcześniej metodę buildHeap() 
 //w operacjach
 void BinaryHeap::heapPush(int number){
+    
+    if(this->getHeapSize() == 0){
+        this->heapSize++;
+        this->array = new int[this->getHeapSize()];
+        this->setElement(0, number);
+    }
+    else{
+        this->heapSize++;
+        int i = this->getHeapSize();
+
+        //Alokacja pamięci
+        int* Tab;
+        Tab = new int[i];
+        Tab[i-1] = number;
+        for(int j=0; j<i-1; j++){
+            Tab[j] = this->array[j];
+        }
+        delete [] array;
+        this->array = Tab;
+        //Koniec alokacji nowego obszaru
+
+        while(i>0 && this->getElement(parent(i)) < number){
+            //this->setElement(i-1, this->getElement(this->parent(i)));
+            this->array[i] = this->array[this->parent(i)];
+            i = this->parent(i);
+        }
+
+        this->setElement(i, number);
+    }
+    
+    
+    /*
     int i, j;
 
     i = this->getHeapSize();
@@ -127,16 +146,15 @@ void BinaryHeap::heapPush(int number){
     }
     delete [] array;
     this->array = Tab;
-    this->size++;
     //Dalsza część procedury
-    j = this->parent(i);
+    j = (i-1)/2;
 
     while(i>0 && (this->array[i] < number)){
         this->setElement(i, this->getElement(j));
         i = j;
-        j = this->parent(i);
+        j = (i-1)/2;
     }
-    this->setElement(i,number);
+    this->setElement(i,number);*/
 }
 
 void BinaryHeap::heapPop(){
@@ -170,7 +188,6 @@ void BinaryHeap::heapPop(){
         }
         delete [] array;
         this->array = Tab;
-        this->size--;
     }
     else return;
 }
@@ -197,22 +214,7 @@ void BinaryHeap::showBinaryHeap(){
     std::cout << "]";
 }
 
-void BinaryHeap::showArray(){
-    std::cout << "Zawartosc tablicy z kopcem: [";
-    for(int i=0; i<this->size; i++){
-        std::cout << " " << this->array[i] << " ";
-    }
-    std::cout << "]";
-}
-
 /**************SETTERY I GETTERY*****************/
-int BinaryHeap::getSize(){
-    return this->size;
-}
-
-bool BinaryHeap::getIsBinaryHeap(){
-    return this->isBinaryHeap;
-}
 
 int BinaryHeap::getElement(int index){
     return this->array[index];

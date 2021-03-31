@@ -3,13 +3,14 @@
 #include <unistd.h>
 #include <string>
 #include "Array.h"
+#include "Additional1.h"
 
 class ArrayOperations
 {
 private:
     /* data */
     Array* array;
-    Additional* lib;
+    Additional1* lib;
 public:
     ArrayOperations();
     ~ArrayOperations();
@@ -41,7 +42,7 @@ public:
 //KONSTRUKTOR
 ArrayOperations::ArrayOperations()
 {
-    this->lib = new Additional();
+    this->lib = new Additional1();
     this->array = nullptr;
 }
 

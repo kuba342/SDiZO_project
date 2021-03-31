@@ -97,8 +97,7 @@ void App::listOperations(){
 
 void App::heapOperations(){
     this->heapOp = new BinaryHeapOperations();
-    std::cout << "TU BEDA OPERACJE";
-    sleep(2);
+    this->heapOp->mainLoop();
 }
 
 void App::treeOperations(){
