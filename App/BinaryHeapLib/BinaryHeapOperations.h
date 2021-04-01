@@ -68,7 +68,7 @@ void BinaryHeapOperations::mainLoop(){
                 break;
             
             case '2':
-               
+                heapPop();
                 break;
             
             case '3':
@@ -248,6 +248,28 @@ void BinaryHeapOperations::heapPush(){
     else{
         std::cout << "Nie stworzono kopca!\n"
                   << "Nie wykonano operacji!";
+        sleep(2);
+    }
+    system("cls");
+}
+
+void BinaryHeapOperations::heapPop(){
+    system("cls");
+    if(this->heap!=nullptr){
+        if(this->heap->getHeapSize()){
+            this->heap->heapPop();
+            std::cout << "Usunieto korzen!";
+            sleep(2);
+        }
+        else{
+            std::cout << "Kopiec jest pusty!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+        }
+    }
+    else{
+        std::cout << "Nie stworzono kopca!\n"
+                  << "Operacja anulowana!";
         sleep(2);
     }
     system("cls");

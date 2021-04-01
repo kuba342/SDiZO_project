@@ -1,5 +1,3 @@
-#pragma once
-
 #include <string>
 #include "ArrayLib/Array.h"
 #include "ArrayLib/ArrayOperations.h"

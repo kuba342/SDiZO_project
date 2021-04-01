@@ -45,6 +45,7 @@ BinaryHeap::BinaryHeap(){
     this->array = new int[this->getHeapSize()];
 }
 
+//Przejrzeć ten konstruktor jak będzie potrzebny
 BinaryHeap::BinaryHeap(int size){
     this->array = new int[size];
     this->heapSize = 0;
@@ -57,13 +58,13 @@ BinaryHeap::~BinaryHeap(){
 /**************RESZTA METOD*********************/
 void BinaryHeap::swap(int index1, int index2){
     int bufor;
-    if(index1 > this->getHeapSize() || index2 > this->getHeapSize()){
+    if(index1 >= this->getHeapSize() || index2 >= this->getHeapSize()){
         return;
     }
     else{
-        bufor = this->getElement(index1);
-        setElement(index1, this->getElement(index2));
-        setElement(index2, bufor);
+        bufor = this->array[index1];
+        this->array[index1] = this->array[index2];
+        this->array[index2] = bufor;
     }
 }
 
@@ -94,13 +95,12 @@ void BinaryHeap::heapify(int index){
 void BinaryHeap::buildHeap(){
     int i = floor(this->getHeapSize()/2);
 
-    for(int i; i>=0; i--){
+    for(int i; i>0; i--){
         this->heapify(i);
     }
 }
 
-//Dla tych metod należy sprawdzić czy wywołano wcześniej metodę buildHeap() 
-//w operacjach
+//DZIAŁA!
 void BinaryHeap::heapPush(int number){
     
     if(this->getHeapSize() == 0){
@@ -109,52 +109,27 @@ void BinaryHeap::heapPush(int number){
         this->setElement(0, number);
     }
     else{
+        int child = this->getHeapSize();    //Indeks dziecka
         this->heapSize++;
-        int i = this->getHeapSize();
+        int parent = this->parent(child);
 
         //Alokacja pamięci
         int* Tab;
-        Tab = new int[i];
-        Tab[i-1] = number;
-        for(int j=0; j<i-1; j++){
+        Tab = new int[this->getHeapSize()];
+        for(int j=0; j<child; j++){
             Tab[j] = this->array[j];
         }
         delete [] array;
         this->array = Tab;
         //Koniec alokacji nowego obszaru
-
-        while(i>0 && this->getElement(parent(i)) < number){
-            //this->setElement(i-1, this->getElement(this->parent(i)));
-            this->array[i] = this->array[this->parent(i)];
-            i = this->parent(i);
+        
+        while(child>0 && this->array[parent] < number){
+            this->array[child] = this->array[parent];
+            child = parent;
+            parent = this->parent(child);
         }
-
-        this->setElement(i, number);
+        this->setElement(child, number);
     }
-    
-    
-    /*
-    int i, j;
-
-    i = this->getHeapSize();
-    this->heapSize++;
-    //Przepisanie do nowej lokalizacji
-    int* Tab;
-    Tab = new int[this->getHeapSize()];
-    for(int i=0; i<this->getHeapSize();i++){
-        Tab[i] = this->array[i];
-    }
-    delete [] array;
-    this->array = Tab;
-    //Dalsza część procedury
-    j = (i-1)/2;
-
-    while(i>0 && (this->array[i] < number)){
-        this->setElement(i, this->getElement(j));
-        i = j;
-        j = (i-1)/2;
-    }
-    this->setElement(i,number);*/
 }
 
 void BinaryHeap::heapPop(){
@@ -194,15 +169,15 @@ void BinaryHeap::heapPop(){
 
 /**************METODY OBLICZAJĄCE INDEKSY******/
 int BinaryHeap::parent(int i){
-    return i/2;
+    return (i-1)/2;
 }
 
 int BinaryHeap::leftSon(int i){
-    return 2*1;
+    return (2*1)+1;
 }
 
 int BinaryHeap::rightSon(int i){
-    return (2*i)+1;
+    return (2*i)+2;
 }
 
 /**************WYŚWIETL KOPIEC/TABLICE******************/
