@@ -20,6 +20,7 @@ public:
     void buildHeap();
     void heapPush(int number);
     void heapPop();
+    void newArray(int size);
 
     //relacja rodzic - syn
     int parent(int i);
@@ -58,7 +59,7 @@ BinaryHeap::~BinaryHeap(){
 /**************RESZTA METOD*********************/
 void BinaryHeap::swap(int index1, int index2){
     int bufor;
-    if(index1 >= this->getHeapSize() || index2 >= this->getHeapSize()){
+    if(index1 >= this->heapSize || index2 >= this->heapSize){
         return;
     }
     else{
@@ -72,30 +73,28 @@ void BinaryHeap::swap(int index1, int index2){
 void BinaryHeap::heapify(int index){
     int left, right, largest;
 
-    left = this->leftSon(index);
-    right = this->rightSon(index);
+    largest = index;
+    left = 2*index+1;
+    right = 2*index+2;
 
-    if(left <= this->getHeapSize() && (this->getElement(left) > this->getElement(index))){
+    if((left < this->heapSize) && (this->array[left] > this->array[index])){
         largest = left;
     }
-    else{
-        largest = index;
-    }
 
-    if(right <= this->getHeapSize() && (this->getElement(right) > this->getElement(largest))){
+    if((right < this->heapSize) && (this->array[right] > this->array[largest])){
         largest = right;
     }
 
     if(largest != index){
-        this->swap(index, largest);
-        this->heapify(largest);
+        swap(index, largest);
+        heapify(largest);
     }
 }
 
 void BinaryHeap::buildHeap(){
-    int i = floor(this->getHeapSize()/2);
+    int i = (this->heapSize/2)-1;
 
-    for(int i; i>0; i--){
+    for(i; i>=0; i--){
         this->heapify(i);
     }
 }
@@ -132,8 +131,9 @@ void BinaryHeap::heapPush(int number){
     }
 }
 
+//DZIAŁA!
 void BinaryHeap::heapPop(){
-    if(this->getHeapSize()>0){
+    if(this->heapSize){
         int i, j, v;
         this->heapSize--;
         //Ostatni element kopca jako indeks pomniejszony wcześniej o 1
@@ -143,29 +143,38 @@ void BinaryHeap::heapPop(){
         i = 0; //korzeń
         j = 1; //  <- lewy syn
 
-        while((j<this->heapSize)){
-            if((j+1<this->heapSize) && (this->array[j+1] > this->array[j])){
+        while(j<this->heapSize){
+            if((j+1 < this->heapSize) && (this->array[j+1] > this->array[j])){
                 j++;
             }
             if(v >= this->array[j]){
                 break;
             }
-
             this->array[i] = this->array[j];
             i = j;
-            j = this->leftSon(j);
+            j = (2*j)+1;
         }
         this->array[i] = v;
         //Przepisanie do nowej lokalizacji
-        /*int* Tab;
+        int* Tab;
         Tab = new int[this->getHeapSize()];
         for(int i=0; i<this->getHeapSize(); i++){
             Tab[i] = this->getElement(i);
         }
         delete [] array;
-        this->array = Tab;*/
+        this->array = Tab;
     }
     else return;
+}
+
+void BinaryHeap::newArray(int size){
+    if(this->array != nullptr){
+        delete [] array;
+        this->array = new int[size];
+    }
+    else{
+        this->array = new int[size];
+    }
 }
 
 /**************METODY OBLICZAJĄCE INDEKSY******/

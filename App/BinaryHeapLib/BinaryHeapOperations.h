@@ -24,7 +24,8 @@ public:
     void removeHeap();
     void heapPush();
     void heapPop();
-    void multiPush();
+    void manualPush();
+    void pushN();
 };
 
 BinaryHeapOperations::BinaryHeapOperations(){
@@ -48,6 +49,7 @@ void BinaryHeapOperations::mainLoop(){
                   << "3. Wczytaj dane z pliku i zbuduj kopiec\n"
                   << "4. Dodaj n liczb do kopca\n"
                   << "5. Usun z korzenia n liczb\n"
+                  << "6. Wprowadz dane recznie i zbuduj kopiec\n"
                   << "S lub s. Pokaz zawartosc kopca\n"
                   << "D lub D. Usun kopiec\n"
                   << "X lub x. Zakoncz operacje na kopcu\n\n"
@@ -73,17 +75,20 @@ void BinaryHeapOperations::mainLoop(){
                 break;
             
             case '3':
-                multiPush();
+
                 break;
 
             case '4':
-                
+                pushN();
                 break;
 
             case '5':
                 
                 break;
             
+            case '6':
+                manualPush();
+                break;
 
             case 'S':
                 showHeap();
@@ -276,8 +281,94 @@ void BinaryHeapOperations::heapPop(){
     system("cls");
 }
 
-void BinaryHeapOperations::multiPush(){
-    for(int i = 0; i<100; i++){
-        this->heap->heapPush(i);
+void BinaryHeapOperations::manualPush(){
+    system("cls");
+    if(this->heap != nullptr && this->heap->getHeapSize() == 0){
+        std::string bufor;
+        std::cout << "Ile liczb chcesz wpisac do kopca?\n"
+                  << "Wpisz: ";
+        std::cin >> bufor;
+        fflush(stdin);
+        if(this->lib->isNum(bufor)){
+            int number = std::stoi(bufor);
+            this->heap->setHeapSize(number);
+            this->heap->newArray(number);
+            
+            std::string input;
+            for(int i=0; i<number; i++){
+                do{
+                    std::cout << "Liczba nr " << i+1 << ": ";
+                    std::cin >> input;
+                    fflush(stdin);
+                    if(this->lib->isNum(input)){
+                        int in = std::stoi(input);
+                        this->heap->setElement(i, in);
+                    }
+                    else{
+                        std::cout << "\nWprowadzono niepoprawne znaki!";
+                    }
+                    std::cout << "\n";
+                }while(!(this->lib->isNum(input)));
+            }
+
+            this->heap->buildHeap();
+        }
+        else{
+            system("cls");
+            std::cout << "Wprowadzono niepoprawne znaki!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+        }
     }
+    else{
+        std::cout << "Trzeba najpierw stworzyc kopiec!\n"
+                  << "lub\n"
+                  << "Istnieje juz kopiec - wtedy usun\n"
+                  << "Operacja anulowana!";
+        sleep(3);
+    }
+    system("cls");
+}
+
+void BinaryHeapOperations::pushN(){
+    system("cls");
+        if(this->heap != nullptr){
+            std::string bufor;
+            std::cout << "Ile liczb chcesz dopisac do kopca?\n"
+                      << "Wpisz: ";
+            std::cin >> bufor;
+            fflush(stdin);
+            if(this->lib->isNum(bufor)){
+                int number = std::stoi(bufor);
+
+                std::string input;
+                for(int i=0; i<number; i++){
+                    do{
+                        std::cout << "Liczba nr " << this->heap->getHeapSize()+1 << ": ";
+                        std::cin >> input;
+                        fflush(stdin);
+                        if(this->lib->isNum(input)){
+                            int in = std::stoi(input);
+                            this->heap->heapPush(in);
+                        }
+                        else{
+                            std::cout << "\nWprowadzono niepoprawne znaki!";
+                        }
+                        std::cout << "\n";
+                    }while(!(this->lib->isNum(input)));
+                }
+            }
+            else{
+                system("cls");
+                std::cout << "Wprowadzono niepoprawne znaki!\n"
+                          << "Operacja anulowana!";
+                sleep(2);
+            }
+        }
+        else{
+            std::cout << "Trzeba najpierw stworzyc kopiec!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+        }
+    system("cls");
 }
