@@ -24,6 +24,7 @@ public:
     void removeHeap();
     void heapPush();
     void heapPop();
+    void multiPush();
 };
 
 BinaryHeapOperations::BinaryHeapOperations(){
@@ -72,7 +73,7 @@ void BinaryHeapOperations::mainLoop(){
                 break;
             
             case '3':
-                
+                multiPush();
                 break;
 
             case '4':
@@ -273,4 +274,10 @@ void BinaryHeapOperations::heapPop(){
         sleep(2);
     }
     system("cls");
+}
+
+void BinaryHeapOperations::multiPush(){
+    for(int i = 0; i<100; i++){
+        this->heap->heapPush(i);
+    }
 }

@@ -136,33 +136,34 @@ void BinaryHeap::heapPop(){
     if(this->getHeapSize()>0){
         int i, j, v;
         this->heapSize--;
-        //Ostatni element kopca
-        v = this->getElement(this->heapSize);
+        //Ostatni element kopca jako indeks pomniejszony wcześniej o 1
+        v = this->array[this->heapSize];
+        //v = this->getElement(this->heapSize);
         //Początek od korzenia
-        i = 0;
+        i = 0; //korzeń
         j = 1; //  <- lewy syn
 
-        while(j<this->getHeapSize()){
-            if(j+1<this->getHeapSize() && this->getElement(j+1) > this->getElement(j)){
+        while((j<this->heapSize)){
+            if((j+1<this->heapSize) && (this->array[j+1] > this->array[j])){
                 j++;
             }
-            if(v >= this->getElement(j)){
+            if(v >= this->array[j]){
                 break;
             }
 
-            this->setElement(i, this->getElement(j));
+            this->array[i] = this->array[j];
             i = j;
-            j = this->rightSon(j);
+            j = this->leftSon(j);
         }
-        this->setElement(i,v);
+        this->array[i] = v;
         //Przepisanie do nowej lokalizacji
-        int* Tab;
+        /*int* Tab;
         Tab = new int[this->getHeapSize()];
         for(int i=0; i<this->getHeapSize(); i++){
             Tab[i] = this->getElement(i);
         }
         delete [] array;
-        this->array = Tab;
+        this->array = Tab;*/
     }
     else return;
 }
