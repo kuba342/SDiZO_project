@@ -26,6 +26,7 @@ public:
     void heapPop();
     void manualPush();
     void pushN();
+    void popN();
 };
 
 BinaryHeapOperations::BinaryHeapOperations(){
@@ -83,7 +84,7 @@ void BinaryHeapOperations::mainLoop(){
                 break;
 
             case '5':
-                
+                popN();
                 break;
             
             case '6':
@@ -369,6 +370,51 @@ void BinaryHeapOperations::pushN(){
             std::cout << "Trzeba najpierw stworzyc kopiec!\n"
                       << "Operacja anulowana!";
             sleep(2);
+        }
+    system("cls");
+}
+
+void BinaryHeapOperations::popN(){
+    system("cls");
+        if(this->heap != nullptr && this->heap->getHeapSize()>0){
+            std::string bufor;
+
+            std::cout << "Ile elementow chcesz usunac z korzenia?\n"
+                      << "Wpisz: ";
+            std::cin >> bufor;
+            fflush(stdin);
+
+            if(this->lib->isNum(bufor)){
+                int number = std::stoi(bufor);
+
+                if(number <= this->heap->getHeapSize()){
+                    for(int i=0; i<number; i++){
+                        this->heap->heapPop();
+                    }
+                    system("cls");
+                    std::cout << "Usunieto " << number << " liczb(y) z korzenia!";
+                    sleep(2);
+                }
+                else{
+                    system("cls");
+                    std::cout << "Zbyt duzo elementow chcesz usunac!\n"
+                              << "Operacja anulowana!";
+                    sleep(2);
+                }
+            }
+            else{
+                system("cls");
+                std::cout << "Wprowadzono niepoprawne znaki!\n"
+                          << "Operacja anulowana!";
+                sleep(2);
+            }
+        }
+        else{
+            std::cout << "Trzeba najpierw stworzyc kopiec!\n"
+                      << "lub\n"
+                      << "Umiescic w nim elementy!\n"
+                      << "Operacja anulowana!";
+            sleep(5);
         }
     system("cls");
 }
