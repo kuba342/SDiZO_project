@@ -20,6 +20,8 @@ public:
     Node* treePredecessor(Node* node);
     void treeInsert(Node* input);
     void treeDelete(Node* out);
+    void leftRotate(Node* node);
+    void rightRotate(Node* node);
 
     //GETTERY
     Node* getRoot();
@@ -173,6 +175,68 @@ void BRTree::treeDelete(Node* out){
         out->setKey(y->getKey());
     }
     return y;*/
+}
+
+void BRTree::leftRotate(Node* node){
+    Node* y;
+    Node* x;
+
+    y = node->getRight();
+    if(y != nullptr){
+        x = node->getParent();
+        node->setRight(y->getLeft());
+
+        if(node->getRight() != nullptr){
+            node->getRight()->setParent(node);
+        }
+
+        y->setLeft(node);
+        y->setParent(x);
+        node->setParent(y);
+
+        if(x != nullptr){
+            if(x->getLeft() == node){
+                x->setLeft(y);
+            }
+            else{
+                x->setRight(y);
+            }
+        }
+        else{
+            this->setRoot(y);
+        }
+    }
+}
+
+void BRTree::rightRotate(Node* node){
+    Node* y;
+    Node* x;
+
+    y = node->getLeft();
+    if(y != nullptr){
+        x = node->getParent();
+        node->setLeft(y->getRight());
+
+        if(node->getLeft() != nullptr){
+            node->getLeft()->setParent(node);
+        }
+
+        y->setRight(node);
+        y->setParent(x);
+        node->setParent(y);
+
+        if(x != nullptr){
+            if(x->getLeft() == node){
+                x->setLeft(y);
+            }
+            else{
+                x->setRight(y);
+            }
+        }
+        else{
+            this->setRoot(y);
+        }
+    }
 }
 
 //GETTERY
