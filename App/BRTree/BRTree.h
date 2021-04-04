@@ -22,6 +22,7 @@ public:
     void treeDelete(Node* out);
     void leftRotate(Node* node);
     void rightRotate(Node* node);
+    void addElement(int value);
 
     //GETTERY
     Node* getRoot();
@@ -236,6 +237,101 @@ void BRTree::rightRotate(Node* node){
         else{
             this->setRoot(y);
         }
+    }
+}
+
+void BRTree::addElement(int value){
+    Node* x;
+    Node* y;
+
+    x = new Node();
+    x->setLeft(nullptr);
+    x->setRight(nullptr);
+    x->setParent(this->getRoot());
+    x->setKey(value);
+
+    if(x->getParent() == nullptr){
+        this->setRoot(x);
+    }
+    else{
+        while(true){
+            if(value < x->getParent()->getKey()){
+                if(x->getParent()->getLeft() == nullptr){
+                    x->getParent()->setLeft(x);
+                    break;
+                }
+
+                x->setParent(x->getParent()->getLeft());
+            }
+            else if(value > x->getParent()->getKey()){
+                if(x->getParent()->getRight() == nullptr){
+                    x->getParent()->setRight(x);
+                    break;
+                }
+
+                x->setParent(x->getParent()->getRight());
+            }
+            else{
+                delete x;
+                return;
+            }
+        }
+
+        //Kolorowanie na czerwono
+        x->setColor('R');
+        while((x != this->getRoot()) && (x->getParent()->getColor() == 'R')){
+            if(x->getParent() == x->getParent()->getParent()->getLeft()){
+                y = x->getParent()->getParent()->getRight();
+
+                //Przypadek 1
+                if(y->getColor() == 'R'){
+                    x->getParent()->setColor('B');
+                    y->setColor('B');
+                    x->getParent()->getParent()->setColor('R');
+                    x = x->getParent()->getParent();
+                    continue;
+                }
+
+                //Przypadek 2
+                if(x == x->getParent()->getRight()){
+                    x = x->getParent();
+                    leftRotate(x);
+                }
+
+                //Przypadek 3
+                x->getParent()->setColor('B');
+                x->getParent()->getParent()->setColor('R');
+                rightRotate(x->getParent()->getParent());
+                break;
+            }
+            else{
+                y->getParent()->getParent()->getLeft();
+
+                //Przypadek 1
+                if(y->getColor() == 'R'){
+                    x->getParent()->setColor('B');
+                    y->setColor('B');
+                    x->getParent()->getParent()->setColor('R');
+                    x = x->getParent()->getParent();
+                    continue;
+                }
+
+                //Przypadek 2
+                if(x == x->getParent()->getLeft()){
+                    x = x->getParent();
+                    rightRotate(x);
+                }
+
+                //Przypadek 3
+                x->getParent()->setColor('B');
+                x->getParent()->getParent()->setColor('R');
+                leftRotate(x->getParent()->getParent());
+                break;
+            }
+        }
+
+        this->getRoot()->setColor('B');
+        this->size++;
     }
 }
 
