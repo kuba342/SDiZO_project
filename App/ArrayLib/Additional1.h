@@ -3,8 +3,12 @@
 
 class Additional1{
 public:
+    Additional1();
     bool isNum(std::string str);
 };
+
+Additional1::Additional1(){
+}
 
 bool Additional1::isNum(std::string str){
     for( int a = 0; a < str.length(); a++ ) {

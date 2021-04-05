@@ -5,6 +5,7 @@
 #include "Array.h"
 #include "Additional1.h"
 #include <fstream>
+#include "clock.h"
 
 class ArrayOperations
 {
@@ -12,6 +13,7 @@ private:
     Array* array;
     std::fstream handler;
     std::string path;
+    Clock* cl;
 
 public:
     Additional1* lib;
@@ -49,11 +51,11 @@ public:
 };
 
 //KONSTRUKTOR
-ArrayOperations::ArrayOperations()
-{
+ArrayOperations::ArrayOperations(){
     this->lib = new Additional1();
     this->array = nullptr;
     this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/ArrayLib/";
+    this->cl = new Clock();
 }
 
 //DESTRUKTOR
@@ -240,10 +242,13 @@ void ArrayOperations::addAtTheBeginning(){
         fflush(stdin);
         if(this->lib->isNum(bufor)){
             int number = std::stoi(bufor);
+            this->cl->startTime();
             this->array->addAtTheBeginning(number);
+            this->cl->endTime();
             system("cls");
-            std::cout << "Dodano na poczatek!";
-            sleep(1);
+            std::cout << "Dodano na poczatek!\n"
+                      << "Czas operacji: " << this->cl->executionTime();
+            sleep(5);
         }
         else{
             system("cls");
