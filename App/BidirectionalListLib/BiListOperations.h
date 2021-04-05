@@ -465,6 +465,7 @@ void BiListOperations::readFromFile(){
 }
 
 void BiListOperations::readData(std::string name){
+    this->handler.close();
     std::string PATH = this->path + name;
     this->handler.open(PATH);
     
@@ -481,6 +482,7 @@ void BiListOperations::readData(std::string name){
         std::cout << "Usun obecna liste!";
         sleep(2);
         system("cls");
+        this->handler.close();
         return;
     }
 
@@ -499,6 +501,7 @@ void BiListOperations::readData(std::string name){
                       << "Operacja anulowana!";
             sleep(2);
             system("cls");
+            this->handler.close();
             return;
         }
     }

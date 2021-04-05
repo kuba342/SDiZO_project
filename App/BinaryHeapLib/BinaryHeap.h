@@ -15,6 +15,7 @@ public:
     ~BinaryHeap();
     //Operacje na tablicy
     void swap(int index1, int index2);
+    int searchKey(int key);
     //Operacje na kopcu
     void heapify(int index);
     void buildHeap();
@@ -175,6 +176,15 @@ void BinaryHeap::newArray(int size){
     else{
         this->array = new int[size];
     }
+}
+
+int BinaryHeap::searchKey(int key){
+    for(int i=0; i<this->heapSize; i++){
+        if(this->array[i] == key){
+            return i;
+        }
+    }
+    return -1;  //Jeśli -1, to nie występuje
 }
 
 /**************METODY OBLICZAJĄCE INDEKSY******/

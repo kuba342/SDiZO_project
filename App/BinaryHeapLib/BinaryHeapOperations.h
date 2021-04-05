@@ -22,6 +22,7 @@ public:
     void mainLoop();
     void readFromFile();
     void readData(std::string name);
+    void searchKey();
 
     //Operacje na kopcu
     void createHeap();
@@ -56,6 +57,7 @@ void BinaryHeapOperations::mainLoop(){
                   << "3. Dodaj n liczb do kopca\n"
                   << "4. Usun z korzenia n liczb\n"
                   << "5. Wprowadz dane recznie i zbuduj kopiec\n"
+                  << "K lub k. Znajdz wartosc w kopcu (jako tablica)\n"
                   << "W lub w. Wczytaj dane z pliku i zbuduj kopiec\n"
                   << "S lub s. Pokaz zawartosc kopca\n"
                   << "D lub D. Usun kopiec\n"
@@ -91,6 +93,13 @@ void BinaryHeapOperations::mainLoop(){
             
             case '5':
                 manualPush();
+                break;
+
+            case 'K':
+                searchKey();
+                break;
+            case 'k':
+                searchKey();
                 break;
 
             case 'W':
@@ -210,6 +219,7 @@ void BinaryHeapOperations::removeHeap(){
                 this->heap = nullptr;
                 std::cout << "Kopiec usuniety!";
                 sleep(2);
+                return;
                 break;
             case 't':
                 system("cls");
@@ -217,6 +227,7 @@ void BinaryHeapOperations::removeHeap(){
                 this->heap = nullptr;
                 std::cout << "Kopiec usuniety!";
                 sleep(2);
+                return;
                 break;
                 
             case 'N':
@@ -428,6 +439,42 @@ void BinaryHeapOperations::popN(){
     system("cls");
 }
 
+void BinaryHeapOperations::searchKey(){
+    system("cls");
+    if(this->heap != nullptr){
+        std::string bufor;
+        std::cout << "Wprowadz liczbe, ktora chcesz znalezc: ";
+        std::cin >> bufor;
+        fflush(stdin);
+        if(this->lib->isNum(bufor)){
+            int number = std::stoi(bufor);
+            int result = this->heap->searchKey(number);
+            if(result == -1){
+                system("cls");
+                std::cout << "Nie znaleziono tego klucza!";
+                sleep(2);
+            }
+            else{
+                system("cls");
+                std::cout << "Klucz jest na pozycji: " << result;
+                sleep(3);
+            }
+        }
+        else{
+            system("cls");
+            std::cout << "Wprowadzono niepoprawna liczbe!";
+            sleep(2); 
+        }
+    }
+    else{
+        system("cls");
+        std::cout << "Nie stworzono kopca!\n"
+                  << "Nie wykonano operacji!";
+        sleep(2);
+    }
+    system("cls");
+}
+
 void BinaryHeapOperations::readFromFile(){
     system("cls");
     readData("dane.txt");
@@ -435,6 +482,7 @@ void BinaryHeapOperations::readFromFile(){
 }
 
 void BinaryHeapOperations::readData(std::string name){
+    this->handler.close();
     std::string PATH = this->path + name;
     this->handler.open(PATH);
     
@@ -448,9 +496,10 @@ void BinaryHeapOperations::readData(std::string name){
     }
     else{
         system("cls");
-        std::cout << "Usun obecna liste!";
+        std::cout << "Usun obecny kopiec!";
         sleep(2);
         system("cls");
+        this->handler.close();
         return;
     }
 
@@ -469,6 +518,7 @@ void BinaryHeapOperations::readData(std::string name){
                       << "Operacja anulowana!";
             sleep(2);
             system("cls");
+            this->handler.close();
             return;
         }
     }

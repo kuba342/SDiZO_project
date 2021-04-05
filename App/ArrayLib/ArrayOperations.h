@@ -563,7 +563,7 @@ void ArrayOperations::readFromFile(){
 }
 
 void ArrayOperations::readData(std::string name){
-    
+    this->handler.close();
     std::string PATH = this->path + name;
     this->handler.open(PATH);
     
@@ -590,6 +590,7 @@ void ArrayOperations::readData(std::string name){
         std::cout << "Usun tablice obecna!";
         sleep(2);
         system("cls");
+        this->handler.close();
         return;
     }
 
@@ -608,10 +609,10 @@ void ArrayOperations::readData(std::string name){
                       << "Operacja anulowana!";
             sleep(2);
             system("cls");
+            this->handler.close();
             return;
         }
     }
-
     this->handler.close();
 }
 
