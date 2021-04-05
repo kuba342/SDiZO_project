@@ -37,6 +37,8 @@ public:
     void showList();
     //D lub d
     void removeList();
+    void searchKey();
+    
     void readFromFile();
     void readData(std::string name);    
 };
@@ -66,6 +68,7 @@ void BiListOperations::mainLoop(){
                   << "4. Usun liczbe z poczatku listy\n"
                   << "5. Usun liczbe z konca listy\n"
                   << "6. Usun liczbe z dowolnego miejsca listy\n"
+                  << "K lub k. Znajdz wartosc w liscie\n"
                   << "W lub w. Wczytaj dane z pliku\n"
                   << "S lub s. Wyswietl liste\n"
                   << "D lub d. Usun liste\n"
@@ -106,6 +109,13 @@ void BiListOperations::mainLoop(){
                 removeOnPosition();
                 break;
             
+            case 'K':
+                searchKey();
+                break;
+            case 'k':
+                searchKey();
+                break;
+
             case 'W':
                 readFromFile();
                 break;
@@ -407,6 +417,42 @@ void BiListOperations::removeList(){
     }
     else{
         std::cout << "Nie stworzono listy - operacja anulowana!";
+        sleep(2);
+    }
+    system("cls");
+}
+
+void BiListOperations::searchKey(){
+    system("cls");
+    if(this->list != nullptr){
+        std::string bufor;
+        std::cout << "Wprowadz liczbe, ktora chcesz znalezc: ";
+        std::cin >> bufor;
+        fflush(stdin);
+        if(this->lib->isNum(bufor)){
+            int number = std::stoi(bufor);
+            int result = this->list->searchKey(number);
+            if(result == -1){
+                system("cls");
+                std::cout << "Nie znaleziono tego klucza!";
+                sleep(2);
+            }
+            else{
+                system("cls");
+                std::cout << "Klucz jest na pozycji: " << result;
+                sleep(3);
+            }
+        }
+        else{
+            system("cls");
+            std::cout << "Wprowadzono niepoprawna liczbe!";
+            sleep(2);
+        }
+    }
+    else{
+        system("cls");
+        std::cout << "Nie stworzono listy!\n"
+                  << "Nie wykonano operacji!";
         sleep(2);
     }
     system("cls");

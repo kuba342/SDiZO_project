@@ -27,6 +27,7 @@ public:
     void removeAtTheEnd();
     void removeOnPosition(listElement* element);
     void showList();
+    int searchKey(int key);
 
     //SETTERY I GETTERY
     listElement* getElement(int n);
@@ -174,6 +175,17 @@ void BiList::showList(){
         std::cout << " " << pointer->data << " ";
     }
     std::cout << "]";
+}
+
+int BiList::searchKey(int key){
+    int count = 0;
+    for(listElement* i=this->head; i!=this->tail; i=i->next){
+        if(i->data == key){
+            return count;
+        }
+        count++;
+    }
+    return -1;
 }
 
 /*********SETTERY I GETTERY*******************/

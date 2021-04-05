@@ -26,6 +26,7 @@ public:
     void addOnPosition(int number, int numberOfPosition);
     void removeOnPosition(int numberOfPosition);
     void showArray();
+    int searchKey(int key);
 };
 
 
@@ -149,6 +150,15 @@ void Array::showArray(){
         printf(" %d ", this->table[i]);
     }
     printf("]\n");
+}
+
+int Array::searchKey(int key){
+    for(int i=0; i<this->size; i++){
+        if(this->table[i] == key){
+            return i;
+        }
+    }
+    return -1;  //Jeśli -1, to nie występuje
 }
 
 /*SETTERY I GETTERY*/
