@@ -23,6 +23,7 @@ public:
     void leftRotate(Node* node);
     void rightRotate(Node* node);
     void addElement(int value);
+    void deleteElement(int value);
 
     //GETTERY
     Node* getRoot();
@@ -240,6 +241,7 @@ void BRTree::rightRotate(Node* node){
     }
 }
 
+//Nie mam pojęcia czy to zadziała
 void BRTree::addElement(int value){
     Node* x;
     Node* y;
@@ -332,6 +334,124 @@ void BRTree::addElement(int value){
 
         this->getRoot()->setColor('B');
         this->size++;
+    }
+}
+
+//Nie mam pojęcia czy to zadziała...
+void BRTree::deleteElement(int value){
+    Node* node;
+    Node* x;
+    Node* y;
+    Node* z;
+
+    node = treeSearch(this->getRoot(), value);
+
+    if((node->getLeft() == nullptr) || (node->getRight() == nullptr)){
+        y = node;
+    }
+    else{
+        y = treeSuccessor(node);
+    }
+
+    if(y->getLeft() != nullptr){
+        z = y->getLeft();
+    }
+    else{
+        z = y->getRight();
+    }
+
+    z->setParent(y->getParent());
+
+    if(y->getParent() == nullptr){
+        this->setRoot(z);
+    }
+    else if(y = y->getParent()->getLeft()){
+        y->getParent()->setLeft(z);
+    }
+    else{
+        y->getParent()->setRight(z);
+    }
+
+    if(y != node){
+        node->setKey(y->getKey());
+    }
+
+
+    //Odbudowa struktury drzewa czerwono-czarnego
+    if(y->getColor() == 'B'){
+        while((z != this->getRoot()) && (z->getColor() == 'B')){
+            if(z == z->getParent()->getLeft()){
+                
+                x = z->getParent()->getRight();
+
+                //Przypadek 1
+                if(x->getColor() == 'R'){
+                    x->setColor('B');
+                    z->getParent()->setColor('R');
+                    leftRotate(z->getParent());
+                    x = z->getParent()->getRight();
+                }
+
+                //Przypadek 2
+                if((x->getLeft()->getColor() == 'B') && (x->getRight()->getColor() == 'B')){
+                    x->setColor('R');
+                    z = z->getParent();
+                    continue;
+                }
+
+                //Przypadek 3
+                if(x->getRight()->getColor() == 'B'){
+                    x->getLeft()->setColor('B');
+                    x->setColor('R');
+                    rightRotate(x);
+                    x = z->getParent()->getRight();
+                }
+
+                //Przypadek 4
+                x->setColor(z->getParent()->getColor());
+                z->getParent()->setColor('B');
+                x->getRight()->setColor('B');
+                leftRotate(z->getParent());
+
+                z = this->getRoot();
+            }
+            else{
+                x = z->getParent()->getLeft();
+
+                //Przypadek 1
+                if(x->getColor() == 'R'){
+                    x->setColor('B');
+                    z->getParent()->setColor('R');
+                    leftRotate(z->getParent());
+                    x = z->getParent()->getLeft();
+                }
+
+                //Przypadek 2
+                if((x->getLeft()->getColor() == 'B') && (x->getRight()->getColor() == 'B')){
+                    x->setColor('R');
+                    z = z->getParent();
+                    continue;
+                }
+
+                //Przypadek 3
+                if(x->getLeft()->getColor() == 'B'){
+                    x->getRight()->setColor('B');
+                    x->setColor('R');
+                    leftRotate(x);
+                    x = z->getParent()->getLeft();
+                }
+
+                //Przypadek 4
+                x->setColor(z->getParent()->getColor());
+                z->getParent()->setColor('B');
+                x->getLeft()->setColor('B');
+                rightRotate(z->getParent());
+
+                z = this->getRoot();
+            }
+        }
+        z->setColor('B');
+        delete y;
     }
 }
 
