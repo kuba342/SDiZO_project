@@ -5,12 +5,16 @@
 #include <string>
 #include "BiList.h"
 #include "Additional2.h"
+#include <fstream>
 
 class BiListOperations
 {
 private:
     BiList* list;
     Additional2* lib;
+    std::string path;
+    std::fstream handler;
+
 public:
     BiListOperations();
     ~BiListOperations();
@@ -33,12 +37,15 @@ public:
     void showList();
     //D lub d
     void removeList();
+    void readFromFile();
+    void readData(std::string name);    
 };
 
 //KONSTRUKTOR
 BiListOperations::BiListOperations(){
     this->list = nullptr;
     this->lib = new Additional2();
+    this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/BidirectionalListLib/";
 }
 
 //DESTRUKTOR
@@ -59,6 +66,7 @@ void BiListOperations::mainLoop(){
                   << "4. Usun liczbe z poczatku listy\n"
                   << "5. Usun liczbe z konca listy\n"
                   << "6. Usun liczbe z dowolnego miejsca listy\n"
+                  << "W lub w. Wczytaj dane z pliku\n"
                   << "S lub s. Wyswietl liste\n"
                   << "D lub d. Usun liste\n"
                   << "X lub x. Zakoncz operacje na liscie\n\n"
@@ -98,6 +106,14 @@ void BiListOperations::mainLoop(){
                 removeOnPosition();
                 break;
             
+            case 'W':
+                readFromFile();
+                break;
+            
+            case 'w':
+                readFromFile();
+                break;
+
             case 'S':
                 showList();
                 break;
@@ -394,4 +410,52 @@ void BiListOperations::removeList(){
         sleep(2);
     }
     system("cls");
+}
+
+void BiListOperations::readFromFile(){
+    system("cls");
+    readData("dane.txt");
+    system("cls");
+}
+
+void BiListOperations::readData(std::string name){
+    std::string PATH = this->path + name;
+    this->handler.open(PATH);
+    
+    std::string line;
+    
+    //Pierwsza linia
+    getline(this->handler, line);
+    
+    if(this->list == nullptr){
+        this->list = new BiList();
+    }
+    else{
+        system("cls");
+        std::cout << "Usun obecna liste!";
+        sleep(2);
+        system("cls");
+        return;
+    }
+
+    int sizeA = std::stoi(line);
+    int data;
+
+    for(int i=0; i<sizeA; i++){
+        getline(this->handler, line);
+        if(this->lib->isNum(line)){
+            data = std::stoi(line);
+            this->list->addAtTheEnd(data);
+        }
+        else{
+            system("cls");
+            std::cout << "Nieprawidlowe dane w pliku!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            system("cls");
+            return;
+        }
+    }
+
+    this->handler.close();
 }

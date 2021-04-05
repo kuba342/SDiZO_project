@@ -49,7 +49,7 @@ BinaryHeap::BinaryHeap(){
 //Przejrzeć ten konstruktor jak będzie potrzebny
 BinaryHeap::BinaryHeap(int size){
     this->array = new int[size];
-    this->heapSize = 0;
+    this->heapSize = size;
 }
 
 BinaryHeap::~BinaryHeap(){

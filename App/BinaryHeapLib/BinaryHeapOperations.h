@@ -5,18 +5,23 @@
 #include <string>
 #include <unistd.h>
 #include "Additional.h"
+#include <fstream>
 
 class BinaryHeapOperations
 {
 private:
     BinaryHeap* heap;
     Additional* lib;
+    std::string path;
+    std::fstream handler;
 
 public:
     BinaryHeapOperations();
     ~BinaryHeapOperations();
 
     void mainLoop();
+    void readFromFile();
+    void readData(std::string name);
 
     //Operacje na kopcu
     void createHeap();
@@ -32,6 +37,7 @@ public:
 BinaryHeapOperations::BinaryHeapOperations(){
     this->heap = nullptr;
     this->lib = new Additional();
+    this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/BinaryHeapLib/";
 }
 
 BinaryHeapOperations::~BinaryHeapOperations(){
@@ -47,10 +53,10 @@ void BinaryHeapOperations::mainLoop(){
                   << "N lub n. Stworz nowy kopiec\n"
                   << "1. Dodaj liczbe do kopca\n"
                   << "2. Usun liczbe z korzenia\n"
-                  << "3. Wczytaj dane z pliku i zbuduj kopiec\n"
-                  << "4. Dodaj n liczb do kopca\n"
-                  << "5. Usun z korzenia n liczb\n"
-                  << "6. Wprowadz dane recznie i zbuduj kopiec\n"
+                  << "3. Dodaj n liczb do kopca\n"
+                  << "4. Usun z korzenia n liczb\n"
+                  << "5. Wprowadz dane recznie i zbuduj kopiec\n"
+                  << "W lub w. Wczytaj dane z pliku i zbuduj kopiec\n"
                   << "S lub s. Pokaz zawartosc kopca\n"
                   << "D lub D. Usun kopiec\n"
                   << "X lub x. Zakoncz operacje na kopcu\n\n"
@@ -74,21 +80,24 @@ void BinaryHeapOperations::mainLoop(){
             case '2':
                 heapPop();
                 break;
-            
+
             case '3':
-
-                break;
-
-            case '4':
                 pushN();
                 break;
 
-            case '5':
+            case '4':
                 popN();
                 break;
             
-            case '6':
+            case '5':
                 manualPush();
+                break;
+
+            case 'W':
+                readFromFile();
+                break;
+            case 'w':
+                readFromFile();
                 break;
 
             case 'S':
@@ -417,4 +426,52 @@ void BinaryHeapOperations::popN(){
             sleep(5);
         }
     system("cls");
+}
+
+void BinaryHeapOperations::readFromFile(){
+    system("cls");
+    readData("dane.txt");
+    system("cls");
+}
+
+void BinaryHeapOperations::readData(std::string name){
+    std::string PATH = this->path + name;
+    this->handler.open(PATH);
+    
+    std::string line;
+    
+    //Pierwsza linia
+    getline(this->handler, line);
+    
+    if(this->heap == nullptr){
+        this->heap = new BinaryHeap();
+    }
+    else{
+        system("cls");
+        std::cout << "Usun obecna liste!";
+        sleep(2);
+        system("cls");
+        return;
+    }
+
+    int sizeA = std::stoi(line);
+    int data;
+
+    for(int i=0; i<sizeA; i++){
+        getline(this->handler, line);
+        if(this->lib->isNum(line)){
+            data = std::stoi(line);
+            this->heap->heapPush(data);
+        }
+        else{
+            system("cls");
+            std::cout << "Nieprawidlowe dane w pliku!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            system("cls");
+            return;
+        }
+    }
+
+    this->handler.close();
 }

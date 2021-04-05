@@ -4,14 +4,17 @@
 #include <string>
 #include "Array.h"
 #include "Additional1.h"
+#include <fstream>
 
 class ArrayOperations
 {
 private:
-    /* data */
     Array* array;
-    Additional1* lib;
+    std::fstream handler;
+    std::string path;
+
 public:
+    Additional1* lib;
     ArrayOperations();
     ~ArrayOperations();
     void mainLoop();
@@ -37,6 +40,10 @@ public:
     void showArray();
     //D lub d
     void removeTab();
+    void readFromFile();
+    void readData(std::string name);
+    Array* getArray();
+    void setArray(Array* array);
 };
 
 //KONSTRUKTOR
@@ -44,6 +51,7 @@ ArrayOperations::ArrayOperations()
 {
     this->lib = new Additional1();
     this->array = nullptr;
+    this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/ArrayLib/";
 }
 
 //DESTRUKTOR
@@ -66,6 +74,7 @@ void ArrayOperations::mainLoop(){
                   << "4. Usun liczbe z poczatku tablicy\n"
                   << "5. Usun liczbe z konca tablicy\n"
                   << "6. Usun liczbe z dowolnego miejsca tablicy\n"
+                  << "W lub w. Wczytaj dane z pliku\n"
                   << "F lub f. Wypelnij tablice recznie\n"
                   << "S lub s. Wyswietl tablice\n"
                   << "D lub d. Usun tablice\n"
@@ -105,6 +114,13 @@ void ArrayOperations::mainLoop(){
                 removeOnPosition();
                 break;
 
+            case 'W':
+                readFromFile();
+                break;
+            
+            case 'w':
+                readFromFile();
+                break;
 
             case 'F':
                 enterNumbers();
@@ -462,6 +478,7 @@ void ArrayOperations::removeTab(){
                 this->array = nullptr;
                 std::cout << "Tablica usunieta!";
                 sleep(3);
+                return;
                 break;
             case 't':
                 system("cls");
@@ -469,6 +486,7 @@ void ArrayOperations::removeTab(){
                 this->array = nullptr;
                 std::cout << "Tablica usunieta!";
                 sleep(3);
+                return;
                 break;
                 
             case 'N':
@@ -491,4 +509,71 @@ void ArrayOperations::removeTab(){
         sleep(3);
     }
     system("cls");
+}
+
+void ArrayOperations::readFromFile(){
+    system("cls");
+    readData("dane.txt");
+    system("cls");
+}
+
+void ArrayOperations::readData(std::string name){
+    
+    std::string PATH = this->path + name;
+    this->handler.open(PATH);
+    
+    std::string line;
+    
+    //Pierwsza linia
+    getline(this->handler, line);
+    
+    if(this->array == nullptr){
+        //Tutaj procedura tworzenia nowej tablicy
+        if(this->lib->isNum(line)){
+            int number = std::stoi(line);
+            this->array = new Array(number);
+        }
+        else{
+            system("cls");
+            std::cout << "Blad wczytywania z pliku!";
+            sleep(2);
+            system("cls");
+        }
+    }
+    else{
+        system("cls");
+        std::cout << "Usun tablice obecna!";
+        sleep(2);
+        system("cls");
+        return;
+    }
+
+    int sizeA = std::stoi(line);
+    int data;
+
+    for(int i=0; i<sizeA; i++){
+        getline(this->handler, line);
+        if(this->lib->isNum(line)){
+            data = std::stoi(line);
+            this->array->getTable()[i] = data;
+        }
+        else{
+            system("cls");
+            std::cout << "Nieprawidlowe dane w pliku!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            system("cls");
+            return;
+        }
+    }
+
+    this->handler.close();
+}
+
+Array* ArrayOperations::getArray(){
+    return this->array;
+}
+
+void ArrayOperations::setArray(Array* array){
+    this->array = array;
 }
