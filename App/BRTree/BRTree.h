@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Node.h"
+#include <unistd.h>
 
 class BRTree
 {
@@ -174,8 +175,8 @@ void BRTree::treeDelete(Node* out){
 }
 
 void BRTree::leftRotate(Node* node){
-    Node* y;
     Node* x;
+    Node* y;
 
     y = node->getRight();
     if(y != nullptr){
@@ -205,8 +206,8 @@ void BRTree::leftRotate(Node* node){
 }
 
 void BRTree::rightRotate(Node* node){
-    Node* y;
     Node* x;
+    Node* y;
 
     y = node->getLeft();
     if(y != nullptr){
@@ -249,6 +250,7 @@ void BRTree::addElement(int value){
 
     if(x->getParent() == nullptr){
         this->setRoot(x);
+        this->getRoot()->setColor('B');
     }
     else{
         while(true){
@@ -276,10 +278,11 @@ void BRTree::addElement(int value){
 
         //Kolorowanie na czerwono
         x->setColor('R');
-        while((x != this->getRoot()) && (x->getParent()->getColor() == 'R')){
+        while((x != this->root) && (x->getParent()->getColor() == 'R')){
             if(x->getParent() == x->getParent()->getParent()->getLeft()){
                 y = x->getParent()->getParent()->getRight();
-
+                    
+                    
                 //Przypadek 1
                 if(y->getColor() == 'R'){
                     x->getParent()->setColor('B');
@@ -288,13 +291,20 @@ void BRTree::addElement(int value){
                     x = x->getParent()->getParent();
                     continue;
                 }
-
+                    system("cls");
+                    std::cout<<"Pulapka1";
+                    sleep(1);
+                    system("cls");
                 //Przypadek 2
                 if(x == x->getParent()->getRight()){
                     x = x->getParent();
                     leftRotate(x);
                 }
 
+                system("cls");
+                    std::cout<<"Pulapka2";
+                    sleep(1);
+                    system("cls");
                 //Przypadek 3
                 x->getParent()->setColor('B');
                 x->getParent()->getParent()->setColor('R');
@@ -302,7 +312,7 @@ void BRTree::addElement(int value){
                 break;
             }
             else{
-                y->getParent()->getParent()->getLeft();
+                y = x->getParent()->getParent()->getLeft();
 
                 //Przypadek 1
                 if(y->getColor() == 'R'){
@@ -326,10 +336,9 @@ void BRTree::addElement(int value){
                 break;
             }
         }
+        this->getRoot()->setColor('B');
+        this->size++;
     }
-
-    this->getRoot()->setColor('B');
-    this->size++;
 }
 
 //Nie mam pojęcia czy to zadziała...
