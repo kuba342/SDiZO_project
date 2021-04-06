@@ -20,6 +20,8 @@ public:
     ArrayOperations();
     ~ArrayOperations();
     void mainLoop();
+    //A lub a
+    void autoTest();
     //N lub n
     bool createTab();
     void createProcedure();
@@ -71,6 +73,7 @@ void ArrayOperations::mainLoop(){
     while(1){
         system("cls");
         std::cout << "OPERACJE DLA TABLICY\n\n"
+                  << "A lub a. Test automatyczny\n"
                   << "N lub n. Stworz nowa tablice\n"
                   << "1. Dodaj liczbe na poczatku tablicy\n"
                   << "2. Dodaj liczbe na koncu tablicy\n"
@@ -88,6 +91,13 @@ void ArrayOperations::mainLoop(){
         std::cin >> number;
         fflush(stdin);
         switch(number){
+            case 'A':
+                autoTest();
+                break;
+            case 'a':
+                autoTest();
+                break;
+            
             case 'N':
                 createProcedure();
                 break;
@@ -627,4 +637,26 @@ Array* ArrayOperations::getArray(){
 
 void ArrayOperations::setArray(Array* array){
     this->array = array;
+}
+
+void ArrayOperations::autoTest(){
+    system("cls");
+    delete array;
+    
+    this->array = new Array(10000);
+    
+    for(int i=0; i<10000; i++){
+        this->array->getTable()[i] = i;
+    }
+    this->cl->startTime();
+        
+        this->array->addAtTheBeginning(99999);
+
+    this->cl->endTime();
+    //this->array->showArray();
+    std::cout << "Czas wykonania: " << this->cl->executionTime() << "\n";
+    std::cout << "\nWcisnij Enter, aby kontynuowac!";
+    std::cin.get();
+    fflush(stdin);
+    system("cls");
 }

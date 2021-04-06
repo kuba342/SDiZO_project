@@ -102,6 +102,5 @@ void App::heapOperations(){
 
 void App::treeOperations(){
     this->treeOp = new BRTreeOperations();
-    std::cout << "TU BEDA OPERACJE";
-    sleep(2);
+    this->treeOp->mainLoop();
 }

@@ -17,7 +17,7 @@ public:
 
     void startTime();
     void endTime();
-    long executionTime();
+    long long executionTime();
 };
 
 Clock::Clock(){
@@ -36,6 +36,6 @@ void Clock::endTime(){
     end = high_resolution_clock::now();
 }
 
-long Clock::executionTime(){
-    return duration_cast<nanoseconds>(Clock::end - Clock::start).count();
+long long Clock::executionTime(){
+    return duration_cast<microseconds>(Clock::end - Clock::start).count();
 }

@@ -5,7 +5,6 @@
 class BRTree
 {
 private:
-    Node* guardian;
     Node* root;
     int size;
 
@@ -34,17 +33,12 @@ public:
 };
 
 BRTree::BRTree(){
-    //Inicjalizacja strażnika
-    this->guardian->setColor('B');
-    this->guardian->setParent(this->guardian);
-    this->guardian->setLeft(this->guardian);
-    this->guardian->setRight(this->guardian);
-    //Korzeń wskazuje na strażnika
-    this->root = this->guardian;
+    this->size = 0;
+    this->root = nullptr;
 }
 
 BRTree::~BRTree(){
-
+    delete this->root;
 }
 
 
@@ -52,7 +46,7 @@ BRTree::~BRTree(){
 void BRTree::inorderTreeWalk(Node* node){
     if(node != nullptr){
         inorderTreeWalk(node->getLeft());
-        std::cout << " " << node->getKey() << " ";
+        std::cout << " " << node->getColor() << node->getKey() << " ";
         inorderTreeWalk(node->getRight());
     }
 }
@@ -250,6 +244,7 @@ void BRTree::addElement(int value){
     x->setLeft(nullptr);
     x->setRight(nullptr);
     x->setParent(this->getRoot());
+    //x->setColor('B');
     x->setKey(value);
 
     if(x->getParent() == nullptr){
@@ -331,10 +326,10 @@ void BRTree::addElement(int value){
                 break;
             }
         }
-
-        this->getRoot()->setColor('B');
-        this->size++;
     }
+
+    this->getRoot()->setColor('B');
+    this->size++;
 }
 
 //Nie mam pojęcia czy to zadziała...

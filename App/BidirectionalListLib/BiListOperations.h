@@ -391,6 +391,7 @@ void BiListOperations::removeList(){
                 this->list = nullptr;
                 std::cout << "Lista usunieta!";
                 sleep(2);
+                return;
                 break;
             case 't':
                 system("cls");
@@ -398,6 +399,7 @@ void BiListOperations::removeList(){
                 this->list = nullptr;
                 std::cout << "Lista usunieta!";
                 sleep(2);
+                return;
                 break;
                 
             case 'N':
