@@ -34,6 +34,9 @@ public:
     void showTree();
     //D lub d
     void removeTree();
+    //W lub w
+    void readFromFile();
+    void readData(std::string name);
 };
 
 BRTreeOperations::BRTreeOperations(){
@@ -94,10 +97,10 @@ void BRTreeOperations::mainLoop(){
                 break;
 
             case 'W':
-
+                readFromFile();
                 break;
             case 'w':
-
+                readFromFile();
                 break;
             
             case 'S':
@@ -187,6 +190,7 @@ void BRTreeOperations::addElement(){
         fflush(stdin);
         if(this->lib->isNum(bufor)){
             int number = std::stoi(bufor);
+            //this->tree->treeInsert(number);
             this->tree->addElement(number);
             system("cls");
             std::cout<<"Dodano element!";
@@ -216,7 +220,8 @@ void BRTreeOperations::removeElement(){
         fflush(stdin);
         if(this->lib->isNum(bufor)){
             int number = std::stoi(bufor);
-            Node* node = this->tree->treeSearch(this->tree->getRoot(), number);
+            Node* node = nullptr;
+            node = this->tree->treeSearch(this->tree->getRoot(), number);
             if(node != nullptr){
                 this->tree->deleteElement(number);
                 system("cls");
@@ -251,6 +256,7 @@ void BRTreeOperations::showTree(){
         std::cout << "Zawartosc drzewa w porzadku inorder: [";
         this->tree->inorderTreeWalk(this->tree->getRoot());
         std::cout << "]\n";
+        std::cout << "Korzen: " << this->tree->getRoot()->getColor() <<this->tree->getRoot()->getKey() << "\n";
         std::cout << "\nWcisnij Enter, aby kontynuowac!";
         std::cin.get();
         fflush(stdin);
@@ -311,4 +317,53 @@ void BRTreeOperations::removeTree(){
         sleep(2);
     }
     system("cls");
+}
+
+void BRTreeOperations::readFromFile(){
+    system("cls");
+    readData("dane.txt");
+    system("cls");
+}
+
+void BRTreeOperations::readData(std::string name){
+    this->handler.close();
+    std::string PATH = this->path + name;
+    this->handler.open(PATH);
+
+    std::string line;
+
+    getline(this->handler, line);
+
+    if(this->tree == nullptr){
+        this->tree = new BRTree();
+    }
+    else{
+        system("cls");
+        std::cout << "Usun obecne drzewo!";
+        sleep(2);
+        system("cls");
+        this->handler.close();
+        return;
+    }
+
+    int sizeA = std::stoi(line);
+    int data;
+
+    for(int i=0; i<sizeA; i++){
+        getline(this->handler, line);
+        if(this->lib->isNum(line)){
+            data = std::stoi(line);
+            this->tree->addElement(data);
+        }
+        else{
+            system("cls");
+            std::cout << "Nieprawidlowe dane w pliku!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            system("cls");
+            this->handler.close();
+            return;
+        }
+    }
+    this->handler.close();
 }

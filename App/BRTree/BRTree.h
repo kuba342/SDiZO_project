@@ -251,6 +251,7 @@ void BRTree::addElement(int value){
     if(x->getParent() == nullptr){
         this->setRoot(x);
         this->getRoot()->setColor('B');
+        this->size++;
     }
     else{
         while(true){
@@ -284,7 +285,7 @@ void BRTree::addElement(int value){
                     
                     
                 //Przypadek 1
-                if(y->getColor() == 'R'){
+                if(y && y->getColor() == 'R'){
                     x->getParent()->setColor('B');
                     y->setColor('B');
                     x->getParent()->getParent()->setColor('R');
@@ -315,7 +316,7 @@ void BRTree::addElement(int value){
                 y = x->getParent()->getParent()->getLeft();
 
                 //Przypadek 1
-                if(y->getColor() == 'R'){
+                if(y && y->getColor() == 'R'){
                     x->getParent()->setColor('B');
                     y->setColor('B');
                     x->getParent()->getParent()->setColor('R');
@@ -369,7 +370,7 @@ void BRTree::deleteElement(int value){
     if(y->getParent() == nullptr){
         this->setRoot(z);
     }
-    else if(y = y->getParent()->getLeft()){
+    else if(y->getParent()->getLeft()){
         y->getParent()->setLeft(z);
     }
     else{
@@ -382,14 +383,14 @@ void BRTree::deleteElement(int value){
 
 
     //Odbudowa struktury drzewa czerwono-czarnego
-    if(y->getColor() == 'B'){
-        while((z != this->getRoot()) && (z->getColor() == 'B')){
+    if(y && y->getColor() == 'B'){
+        while(z && (z != this->getRoot()) && (z->getColor() == 'B')){
             if(z == z->getParent()->getLeft()){
                 
                 x = z->getParent()->getRight();
 
                 //Przypadek 1
-                if(x->getColor() == 'R'){
+                if(x && x->getColor() == 'R'){
                     x->setColor('B');
                     z->getParent()->setColor('R');
                     leftRotate(z->getParent());
@@ -397,14 +398,14 @@ void BRTree::deleteElement(int value){
                 }
 
                 //Przypadek 2
-                if((x->getLeft()->getColor() == 'B') && (x->getRight()->getColor() == 'B')){
+                if(x && (x->getLeft()->getColor() == 'B') && (x->getRight()->getColor() == 'B')){
                     x->setColor('R');
                     z = z->getParent();
                     continue;
                 }
 
                 //Przypadek 3
-                if(x->getRight()->getColor() == 'B'){
+                if(x && x->getRight()->getColor() == 'B'){
                     x->getLeft()->setColor('B');
                     x->setColor('R');
                     rightRotate(x);
@@ -423,7 +424,7 @@ void BRTree::deleteElement(int value){
                 x = z->getParent()->getLeft();
 
                 //Przypadek 1
-                if(x->getColor() == 'R'){
+                if(x && x->getColor() == 'R'){
                     x->setColor('B');
                     z->getParent()->setColor('R');
                     leftRotate(z->getParent());
@@ -431,14 +432,14 @@ void BRTree::deleteElement(int value){
                 }
 
                 //Przypadek 2
-                if((x->getLeft()->getColor() == 'B') && (x->getRight()->getColor() == 'B')){
+                if(x && (x->getLeft()->getColor() == 'B') && (x->getRight()->getColor() == 'B')){
                     x->setColor('R');
                     z = z->getParent();
                     continue;
                 }
 
                 //Przypadek 3
-                if(x->getLeft()->getColor() == 'B'){
+                if(x && x->getLeft()->getColor() == 'B'){
                     x->getRight()->setColor('B');
                     x->setColor('R');
                     leftRotate(x);
@@ -457,6 +458,8 @@ void BRTree::deleteElement(int value){
         z->setColor('B');
         delete y;
     }
+        //z->setColor('B');
+        //delete y;
 }
 
 //GETTERY
