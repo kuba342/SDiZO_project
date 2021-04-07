@@ -6,6 +6,7 @@
 class BRTree
 {
 private:
+    Node* NIL;
     Node* root;
     int size;
 
@@ -35,7 +36,12 @@ public:
 
 BRTree::BRTree(){
     this->size = 0;
-    this->root = nullptr;
+    this->NIL = new Node();
+    this->NIL->setColor('B');
+    this->NIL->setParent(this->NIL);
+    this->NIL->setLeft(this->NIL);
+    this->NIL->setRight(this->NIL);
+    this->root = this->NIL;
 }
 
 BRTree::~BRTree(){
@@ -45,7 +51,7 @@ BRTree::~BRTree(){
 
 //Operacje jak dla normalnego drzewa BST
 void BRTree::inorderTreeWalk(Node* node){
-    if(node != nullptr){
+    if(node != this->NIL){
         inorderTreeWalk(node->getLeft());
         std::cout << " " << node->getColor() << node->getKey() << " ";
         inorderTreeWalk(node->getRight());
@@ -53,7 +59,7 @@ void BRTree::inorderTreeWalk(Node* node){
 }
 
 Node* BRTree::treeSearch(Node* node, int k){
-    if(node == nullptr || k == node->getKey()){
+    if(node == this->NIL || k == node->getKey()){
         return node;
     }
 
@@ -66,25 +72,25 @@ Node* BRTree::treeSearch(Node* node, int k){
 }
 
 Node* BRTree::treeMinimum(Node* node){
-    while(node->getLeft() != nullptr){
+    while(node->getLeft() != this->NIL){
         node = node->getLeft();
     }
     return node;
 }
 
 Node* BRTree::treeMaximum(Node* node){
-    while(node->getRight() != nullptr){
+    while(node->getRight() != this->NIL){
         node = node->getRight();
     }
     return node;
 }
 
 Node* BRTree::treeSuccessor(Node* node){
-    if(node->getRight() != nullptr){
+    if(node->getRight() != this->NIL){
         return treeMinimum(node->getRight());
     }
     Node* y = node->getParent();
-    while(y!=nullptr && node == y->getRight()){
+    while(y!=this->NIL && node == y->getRight()){
         node = y;
         y = y->getParent();
     }
@@ -93,11 +99,11 @@ Node* BRTree::treeSuccessor(Node* node){
 
 Node* BRTree::treePredecessor(Node* node){
     Node* y;
-    if(node->getLeft() != nullptr){
+    if(node->getLeft() != this->NIL){
         return treeMaximum(node);
     }
     y = node->getParent();
-    while(y != nullptr && node == y->getLeft()){
+    while(y != this->NIL && node == y->getLeft()){
         node = y;
         y = y->getParent();
     }
@@ -105,10 +111,10 @@ Node* BRTree::treePredecessor(Node* node){
 }
 
 void BRTree::treeInsert(Node* input){
-    Node* y = nullptr;
+    Node* y = this->NIL;
     Node* x = this->getRoot();
 
-    while(x != nullptr){
+    while(x != this->NIL){
         y = x;
         if(input->getKey() < x->getKey()){
             x = x->getLeft();
@@ -120,7 +126,7 @@ void BRTree::treeInsert(Node* input){
     
     input->setParent(y);
 
-    if(y == nullptr){
+    if(y == this->NIL){
         this->setRoot(input);
     }
     else{
@@ -134,29 +140,29 @@ void BRTree::treeInsert(Node* input){
 }
 
 void BRTree::treeDelete(Node* out){
-    Node* y = nullptr;
+    Node* y = this->NIL;
     Node* x;
 
-    if(out->getLeft() == nullptr || out->getRight() == nullptr){
+    if(out->getLeft() == this->NIL || out->getRight() == this->NIL){
         y = out;
     }
     else{
         y = treeSuccessor(out);
     }
 
-    if(y->getLeft() != nullptr){
+    if(y->getLeft() != this->NIL){
         x = y->getLeft();
     }
     else{
         x = y->getRight();
     }
 
-    if(x != nullptr){
+    if(x != this->NIL){
         x->setParent(y->getParent());
     }
 
     //Od tego momentu Cormen inny algorytm wskazuje
-    if(y->getParent() != nullptr){
+    if(y->getParent() != this->NIL){
         this->setRoot(x);
     }
     else{
@@ -179,11 +185,11 @@ void BRTree::leftRotate(Node* node){
     Node* y;
 
     y = node->getRight();
-    if(y != nullptr){
+    if(y != this->NIL){
         x = node->getParent();
         node->setRight(y->getLeft());
 
-        if(node->getRight() != nullptr){
+        if(node->getRight() != this->NIL){
             node->getRight()->setParent(node);
         }
 
@@ -191,7 +197,7 @@ void BRTree::leftRotate(Node* node){
         y->setParent(x);
         node->setParent(y);
 
-        if(x != nullptr){
+        if(x != this->NIL){
             if(x->getLeft() == node){
                 x->setLeft(y);
             }
@@ -210,11 +216,11 @@ void BRTree::rightRotate(Node* node){
     Node* y;
 
     y = node->getLeft();
-    if(y != nullptr){
+    if(y != this->NIL){
         x = node->getParent();
         node->setLeft(y->getRight());
 
-        if(node->getLeft() != nullptr){
+        if(node->getLeft() != this->NIL){
             node->getLeft()->setParent(node);
         }
 
@@ -222,7 +228,7 @@ void BRTree::rightRotate(Node* node){
         y->setParent(x);
         node->setParent(y);
 
-        if(x != nullptr){
+        if(x != this->NIL){
             if(x->getLeft() == node){
                 x->setLeft(y);
             }
@@ -242,13 +248,13 @@ void BRTree::addElement(int value){
     Node* y;
 
     x = new Node();
-    x->setLeft(nullptr);
-    x->setRight(nullptr);
+    x->setLeft(this->NIL);
+    x->setRight(this->NIL);
     x->setParent(this->getRoot());
     //x->setColor('B');
     x->setKey(value);
 
-    if(x->getParent() == nullptr){
+    if(x->getParent() == this->NIL){
         this->setRoot(x);
         this->getRoot()->setColor('B');
         this->size++;
@@ -256,7 +262,7 @@ void BRTree::addElement(int value){
     else{
         while(true){
             if(value < x->getParent()->getKey()){
-                if(x->getParent()->getLeft() == nullptr){
+                if(x->getParent()->getLeft() == this->NIL){
                     x->getParent()->setLeft(x);
                     break;
                 }
@@ -264,7 +270,7 @@ void BRTree::addElement(int value){
                 x->setParent(x->getParent()->getLeft());
             }
             else if(value > x->getParent()->getKey()){
-                if(x->getParent()->getRight() == nullptr){
+                if(x->getParent()->getRight() == this->NIL){
                     x->getParent()->setRight(x);
                     break;
                 }
@@ -351,14 +357,14 @@ void BRTree::deleteElement(int value){
 
     node = treeSearch(this->getRoot(), value);
 
-    if((node->getLeft() == nullptr) || (node->getRight() == nullptr)){
+    if((node->getLeft() == this->NIL) || (node->getRight() == this->NIL)){
         y = node;
     }
     else{
         y = treeSuccessor(node);
     }
 
-    if(y->getLeft() != nullptr){
+    if(y->getLeft() != this->NIL){
         z = y->getLeft();
     }
     else{
@@ -367,7 +373,7 @@ void BRTree::deleteElement(int value){
 
     z->setParent(y->getParent());
 
-    if(y->getParent() == nullptr){
+    if(y->getParent() == this->NIL){
         this->setRoot(z);
     }
     else if(y->getParent()->getLeft()){
