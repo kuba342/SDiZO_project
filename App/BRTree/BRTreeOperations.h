@@ -220,9 +220,8 @@ void BRTreeOperations::removeElement(){
         fflush(stdin);
         if(this->lib->isNum(bufor)){
             int number = std::stoi(bufor);
-            Node* node = nullptr;
-            node = this->tree->treeSearch(this->tree->getRoot(), number);
-            if(node != nullptr){
+            Node* node = this->tree->treeSearch(this->tree->getRoot(), number);
+            if(node != this->tree->getNIL()){
                 this->tree->deleteElement(number);
                 system("cls");
                 std::cout << "Usunieto element!";

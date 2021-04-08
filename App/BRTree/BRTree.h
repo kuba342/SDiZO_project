@@ -29,6 +29,7 @@ public:
     //GETTERY
     Node* getRoot();
     int getSize();
+    Node* getNIL();
     //SETTERY
     void setRoot(Node* Root);
     //void setSize(int Size);
@@ -298,20 +299,13 @@ void BRTree::addElement(int value){
                     x = x->getParent()->getParent();
                     continue;
                 }
-                    system("cls");
-                    std::cout<<"Pulapka1";
-                    sleep(1);
-                    system("cls");
+        
                 //Przypadek 2
                 if(x == x->getParent()->getRight()){
                     x = x->getParent();
                     leftRotate(x);
                 }
 
-                system("cls");
-                    std::cout<<"Pulapka2";
-                    sleep(1);
-                    system("cls");
                 //Przypadek 3
                 x->getParent()->setColor('B');
                 x->getParent()->getParent()->setColor('R');
@@ -376,7 +370,7 @@ void BRTree::deleteElement(int value){
     if(y->getParent() == this->NIL){
         this->setRoot(z);
     }
-    else if(y->getParent()->getLeft()){
+    else if(y == y->getParent()->getLeft()){
         y->getParent()->setLeft(z);
     }
     else{
@@ -386,7 +380,6 @@ void BRTree::deleteElement(int value){
     if(y != node){
         node->setKey(y->getKey());
     }
-
 
     //Odbudowa struktury drzewa czerwono-czarnego
     if(y && y->getColor() == 'B'){
@@ -464,8 +457,6 @@ void BRTree::deleteElement(int value){
         z->setColor('B');
         delete y;
     }
-        //z->setColor('B');
-        //delete y;
 }
 
 //GETTERY
@@ -475,6 +466,10 @@ Node* BRTree::getRoot(){
 
 int BRTree::getSize(){
     return this->size;
+}
+
+Node* BRTree::getNIL(){
+    return this->NIL;
 }
 //SETTERY
 void BRTree::setRoot(Node* Root){
