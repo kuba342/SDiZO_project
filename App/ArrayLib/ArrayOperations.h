@@ -6,6 +6,7 @@
 #include "Additional1.h"
 #include <fstream>
 #include "clock.h"
+#include <time.h>
 
 class ArrayOperations
 {
@@ -639,13 +640,13 @@ void ArrayOperations::setArray(Array* array){
     this->array = array;
 }
 
-void ArrayOperations::autoTest(){
+/*void ArrayOperations::autoTest(){
     system("cls");
     delete array;
     
-    this->array = new Array(10000);
+    this->array = new Array(10000000);
     
-    for(int i=0; i<10000; i++){
+    for(int i=0; i<10000000; i++){
         this->array->getTable()[i] = i;
     }
     this->cl->startTime();
@@ -658,5 +659,98 @@ void ArrayOperations::autoTest(){
     std::cout << "\nWcisnij Enter, aby kontynuowac!";
     std::cin.get();
     fflush(stdin);
+    system("cls");
+}*/
+
+
+void ArrayOperations::autoTest(){
+    system("cls");
+    delete this->array;
+    char decision1, decision2;
+    int quantity;
+    std::cout << "Ile losowych danych ma znalezc sie w strukturze?\n"
+              << "1. 100 tys.\n"
+              << "2. 500 tys.\n"
+              << "3. 1 mln\n"
+              << "4. 2 mln\n\n"
+              << "Wprowadz numer: ";
+    std::cin >> decision1;
+    fflush(stdin);
+    switch(decision1){
+        case '1':
+            quantity = 100000;
+            break;
+        case '2':
+            quantity = 200000;
+            break;
+        case '3':
+            quantity = 1000000;
+            break;
+        case '4':
+            quantity = 2000000;
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
+    this->array = new Array(quantity);
+
+    srand(time(NULL));
+    //Wypełnienie struktury losowymi liczbami:
+    for(int i=0; i<quantity; i++){
+        this->array->getTable()[i] = rand();
+    }
+
+    system("cls");
+    std::cout << "Ktora operacja ma zostac przeanalizowana?\n"
+              << "1. Dodawanie na poczatek tablicy\n"
+              << "2. Dodawanie na koncu tablicy\n"
+              << "3. Dodawanie w srodku tablicy\n"
+              << "4. Usuwanie z poczatku tablicy\n"
+              << "5. Usuwanie z konca tablicy\n"
+              << "6. Usuwanie ze srodka tablicy\n"
+              << "7. Wyszukanie pierwszego wystapienia klucza\n\n"
+              << "Wpisz jej numer:";
+    std::cin >> decision2;
+    fflush(stdin);
+
+    switch(decision2){
+        case '1':
+
+            break;
+        case '2':
+
+            break;
+        case '3':
+
+            break;
+        case '4':
+
+            break;
+        case '5':
+
+            break;
+        case '6':
+
+            break;
+        case '7':
+
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
     system("cls");
 }
