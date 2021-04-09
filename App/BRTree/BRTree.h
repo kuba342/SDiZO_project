@@ -64,7 +64,7 @@ Node* BRTree::treeSearch(Node* node, int k){
         return node;
     }
 
-    if(k < node->getKey()){
+    if(k <= node->getKey()){
         return treeSearch(node->getLeft(), k);
     }
     else{
@@ -263,7 +263,7 @@ void BRTree::addElement(int value){
     else{
         while(true){
             //Zmienić na <= jesli mogą się powtarzać wartości kluczy
-            if(value < x->getParent()->getKey()){
+            if(value <= x->getParent()->getKey()){
                 if(x->getParent()->getLeft() == this->NIL){
                     x->getParent()->setLeft(x);
                     break;
@@ -279,11 +279,11 @@ void BRTree::addElement(int value){
 
                 x->setParent(x->getParent()->getRight());
             }
-            //Zakomentować blo else, jeśli się mogą powtarzać wartości kluczy
-            else{
+            //Zakomentować blok else, jeśli się mogą powtarzać wartości kluczy
+            /*else{
                 delete x;
                 return;
-            }
+            }*/
         }
 
         //Kolorowanie na czerwono

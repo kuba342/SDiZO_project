@@ -7,6 +7,7 @@
 #include "BRTree.h"
 #include "Additional3.h"
 #include "Node.h"
+#include "clock3.h"
 
 
 class BRTreeOperations
@@ -16,12 +17,17 @@ private:
     Additional3* lib;
     std::string path;
     std::fstream handler;
+    Clock3* cl;
+
+    void Test(int quantity, char decision2);
 
 public:
     BRTreeOperations();
     ~BRTreeOperations();
 
     void mainLoop();
+    //A lub a
+    void autoTest();
     //N lub n
     void createTree();
     //1
@@ -42,6 +48,7 @@ public:
 BRTreeOperations::BRTreeOperations(){
     this->tree = nullptr;
     this->lib = new Additional3();
+    this->cl = new Clock3();
     this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/BRTree/";
 }
 
@@ -76,10 +83,10 @@ void BRTreeOperations::mainLoop(){
                 break;
             
             case 'A':
-
+                autoTest();
                 break;
             case 'a':
-
+                autoTest();
                 break;
 
             case '1':
@@ -366,3 +373,160 @@ void BRTreeOperations::readData(std::string name){
     }
     this->handler.close();
 }
+
+void BRTreeOperations::autoTest(){
+    system("cls");
+    delete this->tree;
+    char decision1, decision2;
+    int quantity;
+    std::cout << "Ile losowych danych ma znalezc sie w strukturze?\n"
+              << "1. 250 tys.\n"
+              << "2. 500 tys.\n"
+              << "3. 750 tys.\n"
+              << "4. 1 mln\n\n"
+              << "Wprowadz numer: ";
+    std::cin >> decision1;
+    fflush(stdin);
+
+    switch(decision1){
+        case '1':
+            quantity = 250000;
+            break;
+        case '2':
+            quantity = 500000;
+            break;
+        case '3':
+            quantity = 750000;
+            break;
+        case '4':
+            quantity = 1000000;
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
+    this->tree = new BRTree();
+    //Uruchom  generator liczb pseudolosowych
+    srand(time(NULL));
+    //Wypełnienie struktury losowymi liczbami:
+    for(int i=0; i<quantity; i++){
+        int input;
+        input = rand();
+        this->tree->addElement(input);
+    }
+
+    system("cls");
+    std::cout << "Ktora operacja ma zostac przeanalizowana?\n"
+              << "1. Dodawanie klucza do drzewa czerwono-czarnego\n"
+              << "2. Usuwanie korzenia\n"
+              << "3. Usuwanie losowego elementu\n"
+              << "4. Wyszukanie pierwszego wystapienia losowego klucza\n\n"
+              << "Wpisz jej numer: ";
+    std::cin >> decision2;
+    fflush(stdin);
+
+    switch(decision2){
+        case '1':
+            Test(quantity, decision2);
+            break;
+        
+        case '2':
+            Test(quantity, decision2);
+            break;
+        
+        case '3':
+            Test(quantity, decision2);
+            break;
+        
+        case '4':
+            Test(quantity, decision2);
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
+    system("cls");
+}
+
+void BRTreeOperations::Test(int quantity, char decision2){
+    system("cls");
+    int numOp = 100;
+    int results[numOp];
+    int INDEX[numOp];
+    int input, average, index = quantity/2, rootKey;
+    Node* node = nullptr;
+    Node* node1 = nullptr;
+
+    for(int i=0; i<numOp; i++){
+        do{
+            input = rand();
+            switch(decision2){
+                case '1':
+                    this->cl->startTime();
+                    this->tree->addElement(input);
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->tree->deleteElement(input);
+                    break;
+                case '2':
+                    rootKey = this->tree->getRoot()->getKey();
+                    this->cl->startTime();
+                    this->tree->deleteElement(rootKey);
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->tree->addElement(rootKey);
+                    break;
+                case '3':
+                    node = nullptr;
+                    node = this->tree->treeSearch(this->tree->getRoot(), input);
+                    if(node != this->tree->getNIL()){
+                        this->cl->startTime();
+                        this->tree->deleteElement(input);
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->tree->addElement(input);
+                    }
+                    break;
+                case '4':
+                    node1 = nullptr;
+                    node1 = this->tree->treeSearch(this->tree->getRoot(), input);
+                    if(node1 != this->tree->getNIL()){
+                        this->cl->startTime();
+                        this->tree->treeSearch(this->tree->getRoot(), input);
+                        this->cl->endTime();
+                    }
+                    break;
+            }
+            int result = this->cl->executionTime();
+            if(result){
+                results[i] = result;
+            }
+        }while(this->cl->executionTime() == 0);
+    }
+
+    average = this->lib->average(results, numOp);
+
+    std::cout << "Rezultaty: [";
+    for(int i=0; i<numOp; i++){
+        std::cout << " " <<results[i] << " ";
+    }
+    std::cout << "]\n\n";
+    std::cout << "Sredni czas operacji: " << average << "\n\n";
+    std::cout << "Wcisnij Enter, aby kontynuowac!";
+    std::cin.get();
+    fflush(stdin);
+    system("cls");
+}
+
