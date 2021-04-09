@@ -16,6 +16,8 @@ private:
     std::string path;
     Clock* cl;
 
+    void Test(int quantity, char decision2);
+
 public:
     Additional1* lib;
     ArrayOperations();
@@ -669,25 +671,25 @@ void ArrayOperations::autoTest(){
     char decision1, decision2;
     int quantity;
     std::cout << "Ile losowych danych ma znalezc sie w strukturze?\n"
-              << "1. 100 tys.\n"
+              << "1. 250 tys.\n"
               << "2. 500 tys.\n"
-              << "3. 1 mln\n"
-              << "4. 2 mln\n\n"
+              << "3. 750 tys.\n"
+              << "4. 1 mln\n\n"
               << "Wprowadz numer: ";
     std::cin >> decision1;
     fflush(stdin);
     switch(decision1){
         case '1':
-            quantity = 100000;
+            quantity = 250000;
             break;
         case '2':
-            quantity = 200000;
+            quantity = 500000;
             break;
         case '3':
-            quantity = 1000000;
+            quantity = 750000;
             break;
         case '4':
-            quantity = 2000000;
+            quantity = 1000000;
             break;
         
         default:
@@ -700,11 +702,16 @@ void ArrayOperations::autoTest(){
     }
 
     this->array = new Array(quantity);
-
+    //Uruchom  generator liczb pseudolosowych
     srand(time(NULL));
     //Wypełnienie struktury losowymi liczbami:
+    
     for(int i=0; i<quantity; i++){
-        this->array->getTable()[i] = rand();
+        int input;
+        do{
+            input = rand();
+            this->array->getTable()[i] = input;
+        }while(input == 1); //Jedynka będzie kluczem, który będę wyszukiwał w testach
     }
 
     system("cls");
@@ -716,31 +723,31 @@ void ArrayOperations::autoTest(){
               << "5. Usuwanie z konca tablicy\n"
               << "6. Usuwanie ze srodka tablicy\n"
               << "7. Wyszukanie pierwszego wystapienia klucza\n\n"
-              << "Wpisz jej numer:";
+              << "Wpisz jej numer: ";
     std::cin >> decision2;
     fflush(stdin);
 
     switch(decision2){
         case '1':
-
+            Test(quantity, decision2);
             break;
         case '2':
-
+            Test(quantity, decision2);
             break;
         case '3':
-
+            Test(quantity, decision2);
             break;
         case '4':
-
+            Test(quantity, decision2);
             break;
         case '5':
-
+            Test(quantity, decision2);
             break;
         case '6':
-
+            Test(quantity, decision2);
             break;
         case '7':
-
+            Test(quantity, decision2);
             break;
         
         default:
@@ -752,5 +759,102 @@ void ArrayOperations::autoTest(){
             break;
     }
 
+    system("cls");
+}
+
+void ArrayOperations::Test(int quantity, char decision2){
+    system("cls");
+    int numOp = 100;
+    int results[numOp];
+    int INDEX[100];
+    int input, average, index = quantity/2;
+    for(int i=0; i<numOp; i++){
+        do{
+                switch(decision2){
+                    case '1':
+                        this->cl->startTime();
+                        this->array->addAtTheBeginning(input);
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->array->removeAtTheBeginning();
+                        break;
+                    case '2':
+                        this->cl->startTime();
+                        this->array->addAtTheEnd(input);
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->array->removeAtTheEnd();
+                        break;
+                    case '3':
+                        this->cl->startTime();
+                        this->array->addOnPosition(input, index);
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->array->removeOnPosition(index);
+                        break;
+                    case '4':
+                        this->cl->startTime();
+                        this->array->removeAtTheBeginning();
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->array->addAtTheBeginning(input);
+                        break;
+                    case '5':
+                        this->cl->startTime();
+                        this->array->removeAtTheEnd();
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->array->addAtTheEnd(input);
+                        break;
+                    case '6':
+                        this->cl->startTime();
+                        this->array->removeOnPosition(index);
+                        this->cl->endTime();
+                        //Odbudowuję liczbę danych
+                        this->array->addOnPosition(input, index);
+                        break;
+                }
+                if(decision2 == '7'){
+                    int output;
+                    //Celowo umieszczam jedynkę w połowie tablicy
+                    this->array->getTable()[index] = 1;
+                    this->cl->startTime();
+                    output = this->array->searchKey(1);
+                    this->cl->endTime();
+                    INDEX[i] = output;
+                    if(output != -1){
+                        int result = this->cl->executionTime();
+                        if(result){
+                            results[i] = result;
+                        }
+                        continue;
+                    }
+                }
+            int result = this->cl->executionTime();
+            if(result){
+                results[i] = result;
+            }
+        }while(this->cl->executionTime() == 0); //Nieuwzględnione błędy
+    }
+
+    if(decision2 == '7'){
+        std::cout << "Znalezione indeksy: [";
+        for(int i=0; i<numOp; i++){
+            std::cout << " " << INDEX[i] << " ";
+        }
+        std::cout << "]\n\n";
+    }
+
+    average = this->lib->average(results, numOp);
+
+    std::cout << "Rezultaty: [";
+    for(int i=0; i<numOp; i++){
+        std::cout << " " <<results[i] << " ";
+    }
+    std::cout << "]\n\n";
+    std::cout << "Sredni czas operacji: " << average << "\n\n";
+    std::cout << "Wcisnij Enter, aby kontynuowac!";
+    std::cin.get();
+    fflush(stdin);
     system("cls");
 }
