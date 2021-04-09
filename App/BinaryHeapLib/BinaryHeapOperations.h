@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "Additional.h"
 #include <fstream>
+#include "clock2.h"
 
 class BinaryHeapOperations
 {
@@ -14,6 +15,9 @@ private:
     Additional* lib;
     std::string path;
     std::fstream handler;
+    Clock2* cl;
+
+    void Test(int quantity, char decision2);
 
 public:
     BinaryHeapOperations();
@@ -24,6 +28,8 @@ public:
     void readData(std::string name);
     void searchKey();
 
+    //A lub a
+    void autoTest();
     //Operacje na kopcu
     void createHeap();
     void showHeap();
@@ -38,6 +44,7 @@ public:
 BinaryHeapOperations::BinaryHeapOperations(){
     this->heap = nullptr;
     this->lib = new Additional();
+    this->cl = new Clock2();
     this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/BinaryHeapLib/";
 }
 
@@ -51,6 +58,7 @@ void BinaryHeapOperations::mainLoop(){
     while(1){
         system("cls");
         std::cout << "OPERACJE DLA KOPCA BINARNEGO\n\n"
+                  << "A lub a. Test automatyczny\n"
                   << "N lub n. Stworz nowy kopiec\n"
                   << "1. Dodaj liczbe do kopca\n"
                   << "2. Usun liczbe z korzenia\n"
@@ -68,6 +76,13 @@ void BinaryHeapOperations::mainLoop(){
         fflush(stdin);
 
         switch(operation){
+            case 'A':
+                autoTest();
+                break;
+            case 'a':
+                autoTest();
+                break;
+
             case 'N':
                 createHeap();
                 break;
@@ -524,4 +539,161 @@ void BinaryHeapOperations::readData(std::string name){
     }
 
     this->handler.close();
+}
+
+void BinaryHeapOperations::autoTest(){
+    system("cls");
+    delete this->heap;
+    char decision1, decision2;
+    int quantity;
+    std::cout << "Ile losowych danych ma znalezc sie w strukturze?\n"
+              << "1. 250 tys.\n"
+              << "2. 500 tys.\n"
+              << "3. 750 tys.\n"
+              << "4. 1 mln\n\n"
+              << "Wprowadz numer: ";
+    std::cin >> decision1;
+    fflush(stdin);
+    switch(decision1){
+        case '1':
+            quantity = 250000;
+            break;
+        case '2':
+            quantity = 500000;
+            break;
+        case '3':
+            quantity = 750000;
+            break;
+        case '4':
+            quantity = 1000000;
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
+    this->heap = new BinaryHeap(quantity);
+
+    //Uruchom  generator liczb pseudolosowych
+    srand(time(NULL));
+    //Wypełnienie struktury losowymi liczbami:
+
+    for(int i=0; i<quantity; i++){
+        int input;
+        do{
+            input = rand();
+            this->heap->getArray()[i] = input;
+        }while(input == 1); //Jedynka będzie kluczem, który będę wyszukiwał w testach
+    }
+
+    this->heap->buildHeap();
+
+    system("cls");
+    std::cout << "Ktora operacja ma zostac przeanalizowana?\n"
+              << "1. Dodawanie klucza do kopca\n"
+              << "2. Usuwanie korzenia\n"
+              << "3. Wyszukanie pierwszego wystapienia klucza\n\n"
+              << "Wpisz jej numer: ";
+    std::cin >> decision2;
+    fflush(stdin);
+
+    switch(decision2){
+        case '1':
+            Test(quantity, decision2);
+            break;
+        
+        case '2':
+            Test(quantity, decision2);
+            break;
+        
+        case '3':
+            Test(quantity, decision2);
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
+    system("cls");
+}
+
+void BinaryHeapOperations::Test(int quantity, char decision2){
+    system("cls");
+    int numOp = 100;
+    int results[numOp];
+    int INDEX[numOp];
+    int input, average, index = quantity/2;
+
+    for(int i=0; i<numOp; i++){
+        do{
+            input = rand();
+            switch(decision2){
+                case '1':
+                    this->cl->startTime();
+                    this->heap->heapPush(input);
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->heap->heapPop();
+                    break;
+                case '2':
+                    this->cl->startTime();
+                    this->heap->heapPop();
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->heap->heapPush(input);
+                    break;
+                case '3':
+                    int output;
+                    //Celowo umieszczam jedynkę
+                    this->heap->heapPush(1);
+                    this->cl->startTime();
+                    output = this->heap->searchKey(1);
+                    this->cl->endTime();
+                    INDEX[i] = output;
+                    if(output != -1){
+                        int result = this->cl->executionTime();
+                        if(result){
+                            results[i] = result;
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            int result = this->cl->executionTime();
+            if(result){
+                results[i] = result;
+            }
+        }while(this->cl->executionTime() == 0); //Nieuwzględnione błędy - zabezpieczenie
+    }
+
+    if(decision2 == '3'){
+        std::cout << "Znalezione indeksy: [";
+        for(int i=0; i<numOp; i++){
+            std::cout << " " << INDEX[i] << " ";
+        }
+        std::cout << "]\n\n";
+    }
+
+    average = this->lib->average(results, numOp);
+
+    std::cout << "Rezultaty: [";
+    for(int i=0; i<numOp; i++){
+        std::cout << " " <<results[i] << " ";
+    }
+    std::cout << "]\n\n";
+    std::cout << "Sredni czas operacji: " << average << "\n\n";
+    std::cout << "Wcisnij Enter, aby kontynuowac!";
+    std::cin.get();
+    fflush(stdin);
+    system("cls");
 }

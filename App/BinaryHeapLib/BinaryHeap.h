@@ -28,6 +28,7 @@ public:
     int leftSon(int i);
     int rightSon(int i);
     //Gettery i settery
+    int* getArray();
     bool getIsBinaryHeap();
     int getElement(int index);
     int getParent(int index);
@@ -237,4 +238,8 @@ int BinaryHeap::getHeapSize(){
 
 void BinaryHeap::setHeapSize(int size){
     this->heapSize = size;
+}
+
+int* BinaryHeap::getArray(){
+    return this->array;
 }
