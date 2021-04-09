@@ -642,29 +642,6 @@ void ArrayOperations::setArray(Array* array){
     this->array = array;
 }
 
-/*void ArrayOperations::autoTest(){
-    system("cls");
-    delete array;
-    
-    this->array = new Array(10000000);
-    
-    for(int i=0; i<10000000; i++){
-        this->array->getTable()[i] = i;
-    }
-    this->cl->startTime();
-        
-        this->array->addAtTheBeginning(99999);
-
-    this->cl->endTime();
-    //this->array->showArray();
-    std::cout << "Czas wykonania: " << this->cl->executionTime() << "\n";
-    std::cout << "\nWcisnij Enter, aby kontynuowac!";
-    std::cin.get();
-    fflush(stdin);
-    system("cls");
-}*/
-
-
 void ArrayOperations::autoTest(){
     system("cls");
     delete this->array;
@@ -766,10 +743,11 @@ void ArrayOperations::Test(int quantity, char decision2){
     system("cls");
     int numOp = 100;
     int results[numOp];
-    int INDEX[100];
+    int INDEX[numOp];
     int input, average, index = quantity/2;
     for(int i=0; i<numOp; i++){
         do{
+                input = rand();
                 switch(decision2){
                     case '1':
                         this->cl->startTime();
@@ -813,22 +791,22 @@ void ArrayOperations::Test(int quantity, char decision2){
                         //Odbudowuję liczbę danych
                         this->array->addOnPosition(input, index);
                         break;
-                }
-                if(decision2 == '7'){
-                    int output;
-                    //Celowo umieszczam jedynkę w połowie tablicy
-                    this->array->getTable()[index] = 1;
-                    this->cl->startTime();
-                    output = this->array->searchKey(1);
-                    this->cl->endTime();
-                    INDEX[i] = output;
-                    if(output != -1){
-                        int result = this->cl->executionTime();
-                        if(result){
-                            results[i] = result;
+                    case '7':
+                        int output;
+                        //Celowo umieszczam jedynkę w połowie tablicy
+                        this->array->getTable()[index] = 1;
+                        this->cl->startTime();
+                        output = this->array->searchKey(1);
+                        this->cl->endTime();
+                        INDEX[i] = output;
+                        if(output != -1){
+                            int result = this->cl->executionTime();
+                            if(result){
+                                results[i] = result;
+                            }
+                            continue;
                         }
-                        continue;
-                    }
+                        break;
                 }
             int result = this->cl->executionTime();
             if(result){

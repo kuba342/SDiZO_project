@@ -6,6 +6,8 @@
 #include "BiList.h"
 #include "Additional2.h"
 #include <fstream>
+#include <time.h>
+#include "clock1.h"
 
 class BiListOperations
 {
@@ -14,6 +16,10 @@ private:
     Additional2* lib;
     std::string path;
     std::fstream handler;
+    Clock1* cl;
+
+    void autoTest();
+    void Test(int quantity, char decision2);
 
 public:
     BiListOperations();
@@ -46,6 +52,7 @@ public:
 //KONSTRUKTOR
 BiListOperations::BiListOperations(){
     this->list = nullptr;
+    this->cl = new Clock1();
     this->lib = new Additional2();
     this->path = "D:/STUDIA/IV semestr/SDiZO/Projekt/SDiZO_project/App/BidirectionalListLib/";
 }
@@ -61,6 +68,7 @@ void BiListOperations::mainLoop(){
     while(1){
         system("cls");
         std::cout << "OPERACJE DLA LISTY\n\n"
+                  << "A lub a. Test automatyczny\n"
                   << "N lub n. Stworz nowa liste\n"
                   << "1. Dodaj liczbe na poczatku listy\n"
                   << "2. Dodaj liczbe na koncu listy\n"
@@ -78,6 +86,13 @@ void BiListOperations::mainLoop(){
         fflush(stdin);
 
         switch(option){
+            case 'A':
+                autoTest();
+                break;
+            case 'a':
+                autoTest();
+                break;
+
             case 'N':
                 createList();
                 break;
@@ -509,4 +524,202 @@ void BiListOperations::readData(std::string name){
     }
 
     this->handler.close();
+}
+
+void BiListOperations::autoTest(){
+    system("cls");
+    delete this->list;
+    char decision1, decision2;
+    int quantity;
+    
+    std::cout << "Ile losowych danych ma znalezc sie w strukturze?\n"
+              << "1. 250 tys.\n"
+              << "2. 500 tys.\n"
+              << "3. 750 tys.\n"
+              << "4. 1 mln\n\n"
+              << "Wprowadz numer: ";
+    std::cin >> decision1;
+    fflush(stdin);
+
+    switch(decision1){
+        case '1':
+            quantity = 250000;
+            break;
+        case '2':
+            quantity = 500000;
+            break;
+        case '3':
+            quantity = 750000;
+            break;
+        case '4':
+            quantity = 1000000;
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+
+    this->list = new BiList();
+    //Uruchom  generator liczb pseudolosowych
+    srand(time(NULL));
+    //Wypełnienie struktury losowymi liczbami:
+    for(int i=0; i<quantity; i++){
+        int input;
+        do{
+            input = rand();
+            if(input != 1){
+                this->list->addAtTheEnd(input);
+            }
+        }while(input == 1); //Jedynka będzie kluczem, który będę wyszukiwał w testach
+    }
+
+    system("cls");
+    std::cout << "Ktora operacja ma zostac przeanalizowana?\n"
+              << "1. Dodawanie na poczatek listy\n"
+              << "2. Dodawanie na koncu listy\n"
+              << "3. Dodawanie w srodku listy\n"
+              << "4. Usuwanie z poczatku listy\n"
+              << "5. Usuwanie z konca listy\n"
+              << "6. Usuwanie ze srodka listy\n"
+              << "7. Wyszukanie pierwszego wystapienia klucza\n\n"
+              << "Wpisz jej numer: ";
+    std::cin >> decision2;
+    fflush(stdin);
+
+    switch(decision2){
+        case '1':
+            Test(quantity, decision2);
+            break;
+        case '2':
+            Test(quantity, decision2);
+            break;
+        case '3':
+            Test(quantity, decision2);
+            break;
+        case '4':
+            Test(quantity, decision2);
+            break;
+        case '5':
+            Test(quantity, decision2);
+            break;
+        case '6':
+            Test(quantity, decision2);
+            break;
+        case '7':
+            Test(quantity, decision2);
+            break;
+        
+        default:
+            system("cls");
+            std::cout << "Wprowadzono niepoprawny znak!\n"
+                      << "Operacja anulowana!";
+            sleep(2);
+            return;
+            break;
+    }
+    system("cls");
+}
+
+void BiListOperations::Test(int quantity, char decision2){
+    system("cls");
+    int numOp = 100;
+    int results[numOp];
+    int INDEX[numOp];
+    int input, average, index = quantity/2;
+
+    for(int i=0; i<numOp; i++){
+        do{
+            input = rand();
+            switch(decision2){
+                case '1':
+                    this->cl->startTime();
+                    this->list->addAtTheBeginning(input);
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->list->removeAtTheBeginning();
+                    break;
+                case '2':
+                    this->cl->startTime();
+                    this->list->addAtTheEnd(input);
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->list->removeAtTheEnd();
+                    break;
+                case '3':
+                    this->cl->startTime();
+                    this->list->addOnPosition(this->list->getElement(index), input);
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->list->removeOnPosition(this->list->getElement(index));
+                    break;
+                case '4':
+                    this->cl->startTime();
+                    this->list->removeAtTheBeginning();
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->list->addAtTheBeginning(input);
+                    break;
+                case '5':
+                    this->cl->startTime();
+                    this->list->removeAtTheEnd();
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->list->addAtTheEnd(input);
+                    break;
+                case '6':
+                    this->cl->startTime();
+                    this->list->removeOnPosition(this->list->getElement(index));
+                    this->cl->endTime();
+                    //Odbudowuję liczbę danych
+                    this->list->addOnPosition(this->list->getElement(index), input);
+                    break;
+                case '7':
+                    int output;
+                    //Celowo umieszczam jedynkę w połowie listy
+                    this->list->addOnPosition(this->list->getElement(index), 1);
+                    this->cl->startTime();
+                    output = this->list->searchKey(1);
+                    this->cl->endTime();
+                    INDEX[i] = output;
+                    if(output != -1){
+                        int result = this->cl->executionTime();
+                        if(result){
+                            results[i] = result;
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            int result = this->cl->executionTime();
+            if(result){
+                results[i] = result;
+            }
+        }while(this->cl->executionTime() == 0); //Nieuwzględnione błędy
+    }
+
+    if(decision2 == '7'){
+        std::cout << "Znalezione indeksy: [";
+        for(int i=0; i<numOp; i++){
+            std::cout << " " << INDEX[i] << " ";
+        }
+        std::cout << "]\n\n";
+    }
+    //Średnia z wyników
+    average = this->lib->average(results, numOp);
+
+    std::cout << "Rezultaty: [";
+    for(int i=0; i<numOp; i++){
+        std::cout << " " <<results[i] << " ";
+    }
+    std::cout << "]\n\n";
+    std::cout << "Sredni czas operacji: " << average << "\n\n";
+    std::cout << "Wcisnij Enter, aby kontynuowac!";
+    std::cin.get();
+    fflush(stdin);
+    system("cls");
 }
