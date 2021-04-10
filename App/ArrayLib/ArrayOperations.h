@@ -750,8 +750,11 @@ void ArrayOperations::Test(int quantity, char decision2){
                 input = rand();
                 switch(decision2){
                     case '1':
+                        //Początek pomiaru
                         this->cl->startTime();
+                        //Operacja na strukturze
                         this->array->addAtTheBeginning(input);
+                        //Koniec pomiaru
                         this->cl->endTime();
                         //Odbudowuję liczbę danych
                         this->array->removeAtTheBeginning();
@@ -808,7 +811,9 @@ void ArrayOperations::Test(int quantity, char decision2){
                         }
                         break;
                 }
+            //Pobranie czasu wykonania
             int result = this->cl->executionTime();
+            //Jeśli różne od 0, zapis do tablicy wyników
             if(result){
                 results[i] = result;
             }
