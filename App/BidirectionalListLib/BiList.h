@@ -179,7 +179,7 @@ void BiList::showList(){
 
 int BiList::searchKey(int key){
     int count = 0;
-    for(listElement* i=this->head; i!=this->tail; i=i->next){
+    for(listElement* i=this->head; i!=this->tail->next; i=i->next){
         if(i->data == key){
             return count;
         }
